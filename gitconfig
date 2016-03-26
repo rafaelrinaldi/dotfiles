@@ -1,0 +1,71 @@
+[user]
+  name = Rafael Rinaldi
+  email = rafael@rinaldi.io
+
+[alias]
+  status = status -sb
+  ls = ls-tree --full-tree -r HEAD
+  tags = tag -l
+  branches = branch -a
+  remotes = remote -v
+  diff = diff --color-words --ignore-space-at-eol
+  bypass = update-index --assume-unchanged
+  labels = !git-labelmaker
+  please = push --force-with-lease
+  undo = reset --soft HEAD^1
+
+[mergetool "Kaleidoscope"]
+  cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+  trustexitcode = true
+
+[merge]
+  tool = Kaleidoscope
+
+[difftool "Kaleidoscope"]
+  cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+
+[difftool]
+  prompt = false
+
+[mergetool]
+  prompt = false
+
+[diff]
+  tool = Kaleidoscope
+
+[core]
+  # Start Vim in insert mode
+  editor = vim +start
+  whitespace = cr-at-eol
+
+[commit]
+  template = ~/.gitmessage
+
+[color]
+  ui = auto
+  branch = auto
+
+[color "diff"]
+  meta = yellow
+  frag = magenta
+  old = red bold
+  new = green bold
+
+[color "status"]
+  added = magenta
+  changed = green
+  untracked = cyan
+
+; Use `origin` as the default remote on the `master` branch in all cases
+[branch "master"]
+  remote = origin
+  merge = refs/heads/master
+
+[fetch]
+  prune = true
+
+[push]
+  default = current
+
+[rebase]
+  autosquash = true

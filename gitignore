@@ -1,0 +1,7 @@
+*.pyc
+*.sw[nop]
+.DS_Store
+.env
+.netrwhist
+Icon?
+*.log

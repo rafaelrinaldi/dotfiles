@@ -1,0 +1,30 @@
+
+
+# ---------------------------------------------------------------------
+#
+# Message header type
+#
+# feat        A new feature
+# fix         A bug fix
+# docs        Documentation only changes
+# style       Changes that do not affect the meaning of the code
+# refactor    A code change that neither fixes a bug or adds a feature
+# perf        A code change that improves performance
+# test        Adding missing tests
+# chore       Changes to the build process or auxiliary tools/libraries
+#
+# ---------------------------------------------------------------------
+#
+# Revert
+#
+# Should begin with `revert: ` followed by the header of the reverted commit.
+# In the body it should say: `This reverts commit <hash>.`
+#
+# ---------------------------------------------------------------------
+#
+# Footer
+#
+# Breaking changes: should start with `BREAKING CHANGE: `
+# Referencing issues: Closes #123, #245, #992
+#
+# ---------------------------------------------------------------------

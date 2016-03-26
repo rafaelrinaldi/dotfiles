@@ -1,0 +1,2 @@
+EXCLUDES="dotfiles.svg README.md LICENSE"
+DOTFILES_DIRS="$HOME/dotfiles"

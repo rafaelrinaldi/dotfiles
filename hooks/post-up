@@ -1,0 +1,22 @@
+#!/bin/bash
+# set ft=sh
+
+echo "Installing Homebrew stuff"
+
+# Install Homebrew stuff
+brew install $(cat Brewfile)
+
+echo "Installing Cask"
+
+# Install Cask
+brew tap caskroom/cask
+
+echo "Installing Cask stuff"
+
+# Install Cask stuff
+brew cask install $(cat Caskfile)
+
+# Add npm credentials
+npm adduser
+
+echo "Everything was setup!"
