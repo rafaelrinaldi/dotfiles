@@ -9,16 +9,19 @@
   protocol = https
 
 [alias]
-  status = status -sb
-  ls = ls-tree --full-tree -r HEAD
-  tags = tag -l
   branches = branch -a
-  remotes = remote -v
-  diff = diff --color-words --ignore-space-at-eol
   bypass = update-index --assume-unchanged
-  labels = !git-labelmaker
+  c = commit -v
+  co = checkout
+  diff = diff --color-words --ignore-space-at-eol
+  l = log --pretty='format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d %C(green)%an%C(reset), %C(dim)%ar' --date=short
+  ls = ls-tree --full-tree -r HEAD
   please = push --force-with-lease
+  remotes = remote -v
+  s = status -sb
+  tags = tag -l
   undo = reset --soft HEAD^1
+  what = whatchanged --decorate
 
 [mergetool "Kaleidoscope"]
   cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
@@ -41,7 +44,7 @@
   tool = Kaleidoscope
 
 [core]
-  # Start Vim in insert mode
+  ; Start Vim in insert mode
   editor = vim +start
   whitespace = cr-at-eol
 
