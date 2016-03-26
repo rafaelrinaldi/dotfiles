@@ -5,6 +5,9 @@
 [github]
   user = rafaelrinaldi
 
+[hub]
+  protocol = https
+
 [alias]
   status = status -sb
   ls = ls-tree --full-tree -r HEAD
