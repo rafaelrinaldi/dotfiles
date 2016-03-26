@@ -1,2 +1,2 @@
-EXCLUDES="dotfiles.svg README.md LICENSE"
+EXCLUDES="dotfiles.png README.md LICENSE"
 DOTFILES_DIRS="$HOME/dotfiles"

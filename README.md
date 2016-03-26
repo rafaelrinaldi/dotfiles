@@ -4,7 +4,7 @@
 
 # dotfiles
 
-[<img src="dotfiles.svg" width="70">][joel]
+[<img src="dotfiles.png" width="70">][joel]
 
 ## Requirements
 
