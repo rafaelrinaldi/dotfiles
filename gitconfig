@@ -12,6 +12,7 @@
   branches = branch -a
   bypass = update-index --assume-unchanged
   c = commit -v
+  cleanup = !git-cleanup
   co = checkout
   diff = diff --color-words --ignore-space-at-eol
   l = log --pretty='format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d %C(green)%an%C(reset), %C(dim)%ar' --date=short
