@@ -7,6 +7,7 @@ set -g TERM xterm-256color-italic
 
 set fish_color_search_match --background=white
 
-alias vim nvim
-alias git hub
 alias cask 'brew cask'
+alias git hub
+alias ip 'curl icanhazip.com'
+alias vim nvim
