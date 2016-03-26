@@ -2,6 +2,9 @@
   name = Rafael Rinaldi
   email = rafael@rinaldi.io
 
+[github]
+  user = rafaelrinaldi
+
 [alias]
   status = status -sb
   ls = ls-tree --full-tree -r HEAD
