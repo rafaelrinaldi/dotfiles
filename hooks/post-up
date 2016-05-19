@@ -16,6 +16,8 @@ echo "Installing Cask stuff"
 # Install Cask stuff
 brew cask install $(cat Caskfile)
 
+echo "Adding npm credentials"
+
 # Add npm credentials
 npm adduser
 
