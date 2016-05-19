@@ -1,24 +1,25 @@
 #!/bin/bash
 # set ft=sh
-
 echo "Installing Homebrew stuff"
 
 # Install Homebrew stuff
-brew install $(cat Brewfile)
+cat ../Brewfile | xargs brew install
 
-echo "Installing Cask"
-
-# Install Cask
-brew tap caskroom/cask
+# Install Cask if not available
+if [ -z `which brew cask` ]; then
+  echo "Installing Cask"
+  brew tap caskroom/cask
+fi
 
 echo "Installing Cask stuff"
 
 # Install Cask stuff
-brew cask install $(cat Caskfile)
+cat ../Caskfile | xargs brew cask install
 
-echo "Adding npm credentials"
-
-# Add npm credentials
-npm adduser
+# Setup npm credentials if needed
+if [ ! -f $HOME/.npmrc ]; then
+  echo "Adding npm credentials"
+  npm adduser
+fi
 
 echo "Everything was setup!"
