@@ -27,7 +27,7 @@ Keep a `~/dotfiles` folder just for convenience.
 
 ```fish
 $ cd $HOME/dotfiles; git pull
-$ rcup
+$ rcup -d $HOME/dotfiles
 ```
 
 ## License
