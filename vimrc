@@ -8,6 +8,10 @@ set shell=/bin/bash
 " be iMproved, required
 set nocompatible
 
+" UTF-8 all the things
+set encoding=utf-8
+set fileencoding=utf-8
+
 " Remove automatic plugin identation (required by Vundle)
 filetype off
 
@@ -36,9 +40,6 @@ Plugin 'editorconfig/editorconfig-vim'
 
 " Solarized color scheme
 Plugin 'altercation/vim-colors-solarized'
-
-" Better status bar (similar to airline but lighter)
-Plugin 'itchyny/lightline.vim'
 
 " Easy way to wrap/unwrap words
 Plugin 'tpope/vim-surround'
@@ -73,14 +74,8 @@ Plugin 'tpope/vim-commentary'
 " Git wrapper
 Plugin 'tpope/vim-fugitive'
 
-" Automatically closes brackets, parens and quotes
-Plugin 'Raimondi/delimitMate'
-
 " Unix commands wrapper
 Plugin 'tpope/vim-eunuch'
-
-" Elm language
-Plugin 'elmcast/elm-vim'
 
 " Buffer navigation improved
 Plugin 'tpope/vim-unimpaired'
@@ -100,8 +95,8 @@ Plugin 'tpope/vim-speeddating'
 " Show Git diff indicators on the sidebar
 Plugin 'airblade/vim-gitgutter'
 
-" Dim inactive windows, panes and tabs
-Plugin 'blueyed/vim-diminactive'
+" Useful status bar
+Plugin 'itchyny/lightline.vim'
 
 "###############################################################################
 "# General settings
@@ -109,9 +104,6 @@ Plugin 'blueyed/vim-diminactive'
 
 " Close Vundle
 call vundle#end()
-
-" UTF-8 all the things
-set encoding=utf-8
 
 " Automatic plugin indent
 filetype plugin indent on
@@ -122,9 +114,6 @@ set number
 " Numbers are relative to cursor
 set relativenumber
 
-" Remap the space key to toggle current fold
-nnoremap <Space> za
-
 " Set the title at top of tab to be the filename
 set title
 
@@ -132,7 +121,7 @@ set title
 syntax enable
 
 " Tab
-set tabstop=2 shiftwidth=2 noexpandtab
+set tabstop=2 shiftwidth=2 expandtab
 
 " Backspace
 set backspace=2
@@ -150,9 +139,6 @@ set cursorline
 set colorcolumn=80
 set linebreak
 
-" Highlight search results
-set hls
-
 " Give one virtual space at end of line
 set virtualedit=onemore
 
@@ -165,6 +151,9 @@ set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg
 set wildignore+=*.sw?
 set wildignore+=.DS_Store
 set wildignore+=node_modules,bower_components,elm-stuff
+
+" Ignore patterns for netrw
+let g:netrw_list_hide='.*\.git,.*\.DS_Store$'
 
 " Set highlight for search
 set hlsearch
@@ -194,6 +183,20 @@ set mouse=a
 " Change the position where panes are opened
 set splitbelow
 set splitright
+
+" Enable tree folding
+set foldenable
+set foldnestmax=10
+set foldlevelstart=10
+
+" Remap the space key to toggle current fold
+nnoremap <tab> za
+
+" Fix folding on JSON and CSS files
+autocmd Filetype json,css,scss setlocal foldmethod=syntax
+
+" Fix folding on HTML files
+autocmd Filetype html setlocal foldmethod=indent
 
 " Limits the body of Git commit messages to 72 characters
 autocmd Filetype gitcommit setlocal spell textwidth=72
@@ -230,6 +233,43 @@ let g:user_emmet_install_global = 0
 
 " Specifies file types for Emmet
 autocmd FileType html,erb,css,scss EmmetInstall
+
+"###############################################################################
+"# CtrlP
+"###############################################################################
+
+" Use Git's `ls-files` and properly ignore hidden files
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+
+" Remap most used CtrlP commands
+nnoremap <leader>f :CtrlP<CR>
+nnoremap <leader>b :CtrlPBuffer<CR>
+
+"###############################################################################
+"# Indent guides
+"###############################################################################
+
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+
+" Disable automatic colors and specify custom ones
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=gray
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=lightgray
+
+"###############################################################################
+"# Polyglot
+"###############################################################################
+
+" Disable JavaScript on Polyglot due to conflicts with yajs
+let g:polyglot_disabled = ['javascript']
+
+"###############################################################################
+"# UltiSnips
+"###############################################################################
+
+let g:UltiSnipsEditSplit='vertical'
 
 "###############################################################################
 "# Lightline
@@ -283,103 +323,3 @@ function! LightLineFilename()
        \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
        \ ('' != LightLineModified() ? '' . LightLineModified() : ' ')
 endfunction
-
-"###############################################################################
-"# CtrlP
-"###############################################################################
-
-" Use the_silver_searcher for fuzzy search
-" let g:ctrlp_user_command = ['ag %s -l --nocolor --hidden -g ""'
-
-" Use Git's `ls-files` and properly ignore hidden files
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
-
-"###############################################################################
-"# Indent guides
-"###############################################################################
-
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
-
-" Disable automatic colors and specify custom ones
-let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=gray
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=lightgray
-
-"###############################################################################
-"# Polyglot
-"###############################################################################
-
-" Disable JavaScript on Polyglot due to conflicts with yajs
-let g:polyglot_disabled = ['javascript']
-
-"###############################################################################
-"# UltiSnips
-"###############################################################################
-
-" When editing snippets, open a new vertical panel
-let g:UltiSnipsEditSplit='vertical'
-
-"###############################################################################
-"# Elm Format
-"###############################################################################
-
-let g:elm_format_autosave = 1
-
-"###############################################################################
-"# Qargs
-"###############################################################################
-
-" Custom command to send whatever is on the quickfix list to the arglist
-
-command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
-function! QuickfixFilenames()
-  let buffer_numbers = {}
-  for quickfix_item in getqflist()
-    let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
-  endfor
-  return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
-endfunction
-
-"###############################################################################
-"# DimInactive
-"###############################################################################
-
-" Remove syntax highlighting from non-focused panes
-let g:diminactive_use_syntax = 1
-
-"###############################################################################
-"# GUI
-"###############################################################################
-
-if has('gui_running')
-  " Typography
-  set guifont=PragmataPro:h20
-  set linespace=5
-
-  " Ligatures support
-  set macligatures
-
-  " Force a screen render when changing modes
-  inoremap <special> <Esc> <Esc>hl
-
-  " Fix the way cursor looks
-  set guicursor+=i:blinkwait0
-
-  " Remove scroll bars
-  set guioptions-=T
-  set guioptions-=r
-
-  " Display the default tab style
-  set guioptions-=e
-
-  " Manually set whitespace chars colors (known issue in Solarized)
-  highlight CursorLineNr cterm=none ctermfg=0 guifg=#D15516 guibg=#FDF7E7
-  highlight NonText cterm=none ctermfg=0 guifg=#F0EBDA
-  highlight SpecialKey cterm=none ctermfg=0 guifg=#F0EBDA guibg=#FDF7E7
-
-  " Customize IndentGuides color scheme
-  autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=none guibg=#9DABAB
-  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=none guibg=#F0EBDA
-endif
