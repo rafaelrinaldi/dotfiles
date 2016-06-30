@@ -1,0 +1,17 @@
+{
+  "editor.fontFamily": "Pragmata Pro",
+  "editor.fontSize": 18,
+  "editor.tabSize": 2,
+  "editor.cursorStyle": "block",
+  "editor.fontLigatures": true,
+  "editor.rulers": [80],
+  "files.trimTrailingWhitespace": true,
+  "editor.scrollBeyondLastLine": false,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true
+  },
+  "files.autoSave": "onFocusChange"
+}

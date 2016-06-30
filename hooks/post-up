@@ -1,6 +1,9 @@
 #!/bin/bash
 # set ft=sh
 
+DOTFILES="$HOME/dotfiles"
+VS_CODE="$HOME/Library/Application Support/Code/User"
+
 echo "Updating Homebrew..."
 
 brew update &> /dev/null
@@ -30,5 +33,9 @@ fi
 echo "Updating Vim plugins..."
 
 vim +PluginUpdate +qall &> /dev/null
+
+echo "Updating VS Code settings..."
+
+mv $DOTFILES/vscode/* $VS_CODE/
 
 echo "Everything was setup!"
