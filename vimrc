@@ -98,6 +98,9 @@ Plugin 'airblade/vim-gitgutter'
 " Useful status bar
 Plugin 'itchyny/lightline.vim'
 
+" So we can repeat plugin commands
+Plugin 'tpope/vim-repeat'
+
 "###############################################################################
 "# General settings
 "###############################################################################
@@ -188,15 +191,13 @@ set splitright
 set foldenable
 set foldnestmax=10
 set foldlevelstart=10
+set foldmethod=indent
 
 " Remap the space key to toggle current fold
 nnoremap <tab> za
 
 " Fix folding on JSON and CSS files
 autocmd Filetype json,css,scss setlocal foldmethod=syntax
-
-" Fix folding on HTML files
-autocmd Filetype html setlocal foldmethod=indent
 
 " Limits the body of Git commit messages to 72 characters
 autocmd Filetype gitcommit setlocal spell textwidth=72
