@@ -11,3 +11,4 @@ set fish_color_search_match --background=white
 alias cask 'brew cask'
 alias git hub
 alias ip 'curl icanhazip.com'
+alias npm-clean 'rm -rf ./node_modules; npm cache clean; npm install'
