@@ -324,3 +324,29 @@ function! LightLineFilename()
        \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
        \ ('' != LightLineModified() ? '' . LightLineModified() : ' ')
 endfunction
+
+"###############################################################################
+"# HyperTerm
+"###############################################################################
+
+if $TERM_PROGRAM == 'hyperterm'
+  autocmd BufRead,BufNewFile *.* setlocal nospell complete=
+  colorscheme default
+  hi CursorLineNr ctermfg=none cterm=bold
+  hi LineNr ctermfg=none
+  hi NonText ctermfg=darkgray
+  hi SpecialKey ctermfg=darkgray
+  hi Comment cterm=none ctermfg=darkgray
+  hi Constant cterm=bold ctermfg=white
+  hi Identifier cterm=bold ctermfg=white
+  hi Function cterm=bold ctermfg=white
+  hi Statement cterm=bold ctermfg=white
+  hi PreProc cterm=bold ctermfg=white
+  hi Type cterm=bold ctermfg=white
+  hi Special cterm=bold ctermfg=white
+  hi Delimiter cterm=bold ctermfg=white
+  hi Search cterm=bold ctermfg=white ctermbg=magenta
+  hi Visual cterm=none ctermfg=white ctermbg=magenta
+  set colorcolumn=
+  set nocursorline
+endif
