@@ -5,7 +5,7 @@
 " Vim doesn't like fish
 set shell=/bin/bash
 
-" be iMproved, required
+" be iMproved
 set nocompatible
 
 " UTF-8 all the things
@@ -17,14 +17,16 @@ set fileencoding=utf-8
 
 call plug#begin()
 
-Plug '1995eaton/vim-better-javascript-completion'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'Raimondi/delimitMate'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'mhartington/deoplete-typescript'
 Plug 'mileszs/ack.vim'
+Plug 'neomake/neomake'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-abolish'
@@ -36,6 +38,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'wakatime/vim-wakatime'
 Plug 'wincent/command-t', {'do': 'cd ruby/command-t; ruby extconf.rb; make'}
+Plug 'wincent/ferret'
 
 call plug#end()
 
@@ -134,9 +137,15 @@ set complete-=t
 set completeopt-=preview
 set completeopt+=menu,menuone
 
-au FileType html,xhtml setl ofu=htmlcomplete#CompleteTags
-au FileType css,scss setl ofu=csscomplete#CompleteCSS
-au FileType javascript setl ofu=javascriptcomplete#CompleteJS
+" omnifuncs
+augroup omnifuncs
+  autocmd!
+  autocmd FileType css,scss setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,xhtml,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+augroup end
 
 " Save file when switching buffers
 set autowriteall
@@ -151,15 +160,6 @@ nnoremap <tab> za
 "###############################################################################
 "# File-type specific
 "###############################################################################
-
-function! s:setupWrapping()
-  set wrap
-  set wrapmargin=2
-  set textwidth=80
-endfunction
-
-" Make sure all markdown files have the correct filetype set and setup wrapping
-au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown | call s:setupWrapping()
 
 " Fix folding on JSON and CSS files
 autocmd Filetype json,css,scss setlocal foldmethod=syntax
@@ -193,31 +193,39 @@ highlight CursorLineNr cterm=bold
 "# Plugin specific
 "###############################################################################
 
-" Use Git's `ls-files` to actually ignore hidden files
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+" Uses The Silver Searcher for grepping if available
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
-" Remap most used CtrlP commands
-nnoremap <leader>f :CtrlP<CR>
-nnoremap <leader>b :CtrlPBuffer<CR>
+" Start search with Command-T on active buffers
+nnoremap <leader>b :CommandTBuffer<CR>
 
 " Split snippet edit panels vertically by default
 let g:UltiSnipsEditSplit='vertical'
 
-"###############################################################################
-"# Misc
-"###############################################################################
+" Plugin extractable
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#file#enable_buffer_path = 1
 
-if has('termguicolors')
-  if &term =~# 'tmux-256color'
-    let &t_8f="\e[38;2;%ld;%ld;%ldm"
-    let &t_8b="\e[48;2;%ld;%ld;%ldm"
-  endif
-endif
+" All linting errors show be bullets
+let g:neomake_error_sign = {'text': '•', 'texthl': 'NeomakeErrorSign'}
+let g:neomake_warning_sign = {'text': '•', 'texthl': 'NeomakeWarningSign'}
 
-" Load local vimrc if available
-if filereadable(glob("~/.vimrc.local")) 
-  source ~/.vimrc.local
-endif
+hi NeomakeErrorSign ctermfg=124 cterm=bold
+hi NeomakeWarningSign ctermfg=31 cterm=bold
+
+" Linting with Neomake
+let g:neomake_javascript_enabled_makers = ['eslint_d']
+let g:neomake_jsx_enabled_makers = ['eslint_d']
+let g:neomake_highlight_lines = 1
+let g:neomake_open_list = 2
+
+" Trigger linter whenever saving/reading a file
+augroup neomake_linter
+  autocmd!
+  autocmd BufWritePost,BufReadPost * Neomake
+augroup end
 
 "###############################################################################
 "# Misc
