@@ -24,11 +24,14 @@ Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'flowtype/vim-flow'
+Plug 'jparise/vim-graphql'
 Plug 'mhartington/deoplete-typescript'
 Plug 'mileszs/ack.vim'
 Plug 'neomake/neomake'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'sheerun/vim-polyglot'
+Plug 'steelsojka/deoplete-flow'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -142,7 +145,7 @@ augroup omnifuncs
   autocmd!
   autocmd FileType css,scss setlocal omnifunc=csscomplete#CompleteCSS
   autocmd FileType html,xhtml,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType javascript,jsx setlocal omnifunc=javascriptcomplete#CompleteJS
   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 augroup end
@@ -212,26 +215,25 @@ let g:deoplete#file#enable_buffer_path = 1
 let g:neomake_error_sign = {'text': '•', 'texthl': 'NeomakeErrorSign'}
 let g:neomake_warning_sign = {'text': '•', 'texthl': 'NeomakeWarningSign'}
 
+" Prettier linting errors
 hi NeomakeErrorSign ctermfg=124 cterm=bold
 hi NeomakeWarningSign ctermfg=31 cterm=bold
 
 " Linting with Neomake
-let g:neomake_javascript_enabled_makers = ['eslint_d']
-let g:neomake_jsx_enabled_makers = ['eslint_d']
-let g:neomake_highlight_lines = 1
-let g:neomake_open_list = 2
+let g:neomake_highlight_columns = 0
+
+" Disable Flow linting through FB's plugin, delegate this to Neomake instead
+let g:flow#enable = 0
 
 " Trigger linter whenever saving/reading a file
-augroup neomake_linter
+augroup NeomakeLinter
   autocmd!
   autocmd BufWritePost,BufReadPost * Neomake
 augroup end
 
 "###############################################################################
-"# Misc
+"# Project specific Vim configuration
 "###############################################################################
 
-" Load local vimrc if available
-if filereadable(glob("~/.vimrc.local")) 
-  source ~/.vimrc.local
-endif
+set exrc
+set secure
