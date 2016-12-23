@@ -1,7 +1,3 @@
-"###############################################################################
-"# Bootstrap
-"###############################################################################
-
 " Vim doesn't like fish
 set shell=/bin/bash
 
@@ -11,27 +7,26 @@ set nocompatible
 " UTF-8 all the things
 set fileencoding=utf-8
 
-"###############################################################################
-"# Plugins
-"###############################################################################
+" Plugins
+" =============================================================================
 
 call plug#begin()
 
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'Raimondi/delimitMate'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
+Plug 'carlitux/deoplete-ternjs', {'do': 'npm i tern -g'}
 Plug 'editorconfig/editorconfig-vim'
-Plug 'flowtype/vim-flow'
-Plug 'jparise/vim-graphql'
-Plug 'mhartington/deoplete-typescript'
+Plug 'mhartington/deoplete-typescript', {'do': ':UpdateRemotePlugins'}
 Plug 'mileszs/ack.vim'
 Plug 'neomake/neomake'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'sheerun/vim-polyglot'
-Plug 'steelsojka/deoplete-flow'
+Plug 'steelsojka/deoplete-flow', {'do': ':UpdateRemotePlugins'}
+Plug 'ternjs/tern_for_vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -45,9 +40,8 @@ Plug 'wincent/ferret'
 
 call plug#end()
 
-"###############################################################################
-"# General settings
-"###############################################################################
+" General settings
+" =============================================================================
 
 " Automatic plugin indent
 filetype plugin indent on
@@ -98,7 +92,7 @@ set wildignore+=.DS_Store
 set wildignore+=node_modules,bower_components,elm-stuff
 
 " Ignore patterns for netrw
-let g:netrw_list_hide='.*\.git,.*\.DS_Store$'
+let g:netrw_list_hide='.*\.git,.*\.DS_Store,.\/node_modules$'
 
 " Set highlight for search
 set hlsearch
@@ -131,57 +125,57 @@ set foldnestmax=10
 set foldlevelstart=10
 set foldmethod=indent
 
-" Show ruler at all times
+" Show ruler
 set ruler
-
-" Omni completion menu options
-set complete-=i
-set complete-=t
-set completeopt-=preview
-set completeopt+=menu,menuone
-
-" omnifuncs
-augroup omnifuncs
-  autocmd!
-  autocmd FileType css,scss setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,xhtml,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript,jsx setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-augroup end
 
 " Save file when switching buffers
 set autowriteall
 
-"###############################################################################
-"# Key mapping
-"###############################################################################
+" Omni completion menu options
+set cot-=preview
+
+" Mappings
+" =============================================================================
 
 " Remap the space key to toggle current fold
 nnoremap <tab> za
 
-"###############################################################################
-"# File-type specific
-"###############################################################################
+" Start search with Command-T on active buffers
+nnoremap <leader>b :CommandTBuffer<CR>
+
+" File specific
+" =============================================================================
 
 " Fix folding on JSON and CSS files
-autocmd Filetype json,css,scss setlocal foldmethod=syntax
+autocmd FileType json,css,scss set foldmethod=syntax
 
 " Limits the body of Git commit messages to 72 characters
-autocmd Filetype gitcommit setlocal textwidth=72
+autocmd FileType gitcommit set textwidth=72
 
 " Enable spell checking on certain file types
-autocmd BufRead,BufNewFile *.md,gitcommit setlocal spell complete+=kspell
+autocmd BufRead,BufNewFile *.md,gitcommit set spell complete+=kspell
+
+" Set syntax highlighting for specific file types
+autocmd BufRead,BufNewFile *.eslintrc set filetype=json
+autocmd BufRead,BufNewFile *.tsx set filetype=typescript
+
+" Some file types use hard tabs
+autocmd FileType {make,gitconfig} set noexpandtab
+
+" Events
+" =============================================================================
 
 " Auto save files when focus is lost
-au FocusLost * silent! wa
+autocmd FocusLost * silent! wa
 
-" Some file types use real tabs
-au FileType {make,gitconfig} setl noexpandtab
+" Trigger linter whenever saving/reading a file
+augroup NeomakeLinter
+  autocmd!
+  autocmd BufWritePost,BufReadPost * Neomake
+augroup end
 
-"###############################################################################
-"# Theming
-"###############################################################################
+" Theming
+" =============================================================================
 
 set background=light
 colorscheme PaperColor
@@ -192,48 +186,56 @@ highlight Comment cterm=italic
 " Display current line number in bold text
 highlight CursorLineNr cterm=bold
 
-"###############################################################################
-"# Plugin specific
-"###############################################################################
+" Auto completion
+" =============================================================================
 
-" Uses The Silver Searcher for grepping if available
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-
-" Start search with Command-T on active buffers
-nnoremap <leader>b :CommandTBuffer<CR>
-
-" Split snippet edit panels vertically by default
-let g:UltiSnipsEditSplit='vertical'
-
-" Plugin extractable
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#file#enable_buffer_path = 1
-
-" All linting errors show be bullets
-let g:neomake_error_sign = {'text': '•', 'texthl': 'NeomakeErrorSign'}
-let g:neomake_warning_sign = {'text': '•', 'texthl': 'NeomakeWarningSign'}
-
-" Prettier linting errors
-hi NeomakeErrorSign ctermfg=124 cterm=bold
-hi NeomakeWarningSign ctermfg=31 cterm=bold
-
-" Linting with Neomake
-let g:neomake_highlight_columns = 0
-
-" Disable Flow linting through FB's plugin, delegate this to Neomake instead
-let g:flow#enable = 0
-
-" Trigger linter whenever saving/reading a file
-augroup NeomakeLinter
+" Enable built in omni completion
+augroup omnifuncs
   autocmd!
-  autocmd BufWritePost,BufReadPost * Neomake
+  autocmd FileType css,scss setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,xhtml,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 augroup end
 
-"###############################################################################
-"# Project specific Vim configuration
-"###############################################################################
+" Deoplete
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#enable_refresh_always = 1
 
-set exrc
-set secure
+" Tern
+let g:tern_request_timeout = 1
+let g:tern#arguments = ['--persistent']
+
+" Linting
+" =============================================================================
+
+let g:neomake_highlight_columns = 0
+
+" All linting errors show be bullets
+let g:neomake_error_sign = {'text': '●', 'texthl': 'NeomakeErrorSign'}
+let g:neomake_warning_sign = {'text': '●', 'texthl': 'NeomakeWarningSign'}
+
+" Prettier linting errors
+highlight NeomakeErrorSign ctermfg=124 cterm=bold
+highlight NeomakeWarningSign ctermfg=31 cterm=bold
+
+" File navigation
+" =============================================================================
+
+" Uses ripgrep for fastest possible grepping (if available)
+if executable('rg')
+  set grepprg=rg\ --vimgrep
+
+  if exists(':Ack')
+    let g:ackprg = 'rg --vimgrep'
+  endif
+endif
+
+" Misc
+" =============================================================================
+
+" Load config per project if `.lvimrc` is present
+if filereadable(glob('./.lvimrc'))
+  source ./.lvimrc
+endif
