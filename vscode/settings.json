@@ -1,17 +1,25 @@
 {
-  "editor.fontFamily": "Pragmata Pro",
-  "editor.fontSize": 18,
-  "editor.tabSize": 2,
-  "editor.cursorStyle": "block",
-  "editor.fontLigatures": true,
-  "editor.rulers": [80],
-  "files.trimTrailingWhitespace": true,
-  "editor.scrollBeyondLastLine": false,
-  "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.DS_Store": true,
-    "**/node_modules": true
-  },
-  "files.autoSave": "onFocusChange"
-}
+    "editor.cursorStyle": "block",
+    "editor.fontFamily": "SF Mono",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 16,
+    "editor.lineHeight": 0.5,
+    "editor.renderIndentGuides": true,
+    "editor.roundedSelection": false,
+    "editor.rulers": [80],
+    "editor.scrollBeyondLastLine": false,
+    "editor.tabSize": 2,
+    "files.autoSave": "onFocusChange",
+    "files.trimTrailingWhitespace": true,
+    "terminal.integrated.lineHeight": 22,
+    "editor.lineNumbers": "relative",
+    "npm-intellisense.scanDevDependencies": true,
+    "npm-intellisense.showBuildInLibs": true,
+    "flow.enabled": false,
+    "files.insertFinalNewline": true,
+    "vim.hlsearch": true,
+    "html.format.endWithNewline": true,
+    "css.lint.duplicateProperties": "warning",
+    "eslint.run": "onSave",
+    "extensions.autoUpdate": true
+  }

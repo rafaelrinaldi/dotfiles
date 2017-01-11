@@ -1,6 +1,11 @@
 [
   {
     "key": "ctrl+w",
-    "command": "workbench.action.cycleEditor"
+    "command": "workbench.action.navigateEditorGroups"
+  },
+  {
+    "key": "tab",
+    "command": "editor.fold",
+    "when": "vim.mode == 'Normal'"
   }
 ]
