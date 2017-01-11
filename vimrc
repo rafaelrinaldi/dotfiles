@@ -18,7 +18,7 @@ Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
-Plug 'carlitux/deoplete-ternjs', {'do': 'npm i tern -g'}
+Plug 'carlitux/deoplete-ternjs', {'do': 'yarn global add tern --prefix /usr/local'}
 Plug 'editorconfig/editorconfig-vim'
 Plug 'mhartington/deoplete-typescript', {'do': ':UpdateRemotePlugins'}
 Plug 'mileszs/ack.vim'
@@ -26,7 +26,7 @@ Plug 'neomake/neomake'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'sheerun/vim-polyglot'
 Plug 'steelsojka/deoplete-flow', {'do': ':UpdateRemotePlugins'}
-Plug 'ternjs/tern_for_vim'
+Plug 'ternjs/tern_for_vim', {'do': 'npm install'}
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -36,7 +36,6 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'wakatime/vim-wakatime'
 Plug 'wincent/command-t', {'do': 'cd ruby/command-t; ruby extconf.rb; make'}
-Plug 'wincent/ferret'
 
 call plug#end()
 
@@ -134,11 +133,25 @@ set autowriteall
 " Omni completion menu options
 set cot-=preview
 
+" Neovim
+" =============================================================================
+
+if has('nvim')
+  " Automatically see commands and their output as you type
+  set inccommand=split
+
+  " Enable Neovim support for true terminal colors
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+endif
+
 " Mappings
 " =============================================================================
 
 " Remap the space key to toggle current fold
 nnoremap <tab> za
+
+" Trigger CommandT
+nnoremap <leader>t :CommandT<CR>
 
 " Start search with Command-T on active buffers
 nnoremap <leader>b :CommandTBuffer<CR>
@@ -146,14 +159,11 @@ nnoremap <leader>b :CommandTBuffer<CR>
 " File specific
 " =============================================================================
 
-" Fix folding on JSON and CSS files
-autocmd FileType json,css,scss set foldmethod=syntax
-
 " Limits the body of Git commit messages to 72 characters
 autocmd FileType gitcommit set textwidth=72
 
 " Enable spell checking on certain file types
-autocmd BufRead,BufNewFile *.md,gitcommit set spell complete+=kspell
+autocmd FileType {markdown,gitcommit} set spell
 
 " Set syntax highlighting for specific file types
 autocmd BufRead,BufNewFile *.eslintrc set filetype=json
@@ -225,11 +235,11 @@ highlight NeomakeWarningSign ctermfg=31 cterm=bold
 
 " Uses ripgrep for fastest possible grepping (if available)
 if executable('rg')
+  " Point binary to Vim
   set grepprg=rg\ --vimgrep
 
-  if exists(':Ack')
-    let g:ackprg = 'rg --vimgrep'
-  endif
+  " Point binary to Ack
+  let g:ackprg = 'rg --vimgrep'
 endif
 
 " Misc
