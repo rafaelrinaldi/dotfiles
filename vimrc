@@ -1,6 +1,3 @@
-" Vim doesn't like fish
-set shell=/bin/bash
-
 " be iMproved
 set nocompatible
 
@@ -22,7 +19,6 @@ Plug 'carlitux/deoplete-ternjs', {'do': 'yarn global add tern --prefix /usr/loca
 Plug 'editorconfig/editorconfig-vim'
 Plug 'mhartington/deoplete-typescript', {'do': ':UpdateRemotePlugins'}
 Plug 'mileszs/ack.vim'
-Plug 'neomake/neomake'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'sheerun/vim-polyglot'
 Plug 'steelsojka/deoplete-flow', {'do': ':UpdateRemotePlugins'}
@@ -34,6 +30,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
+Plug 'w0rp/ale'
 Plug 'wakatime/vim-wakatime'
 Plug 'wincent/command-t', {'do': 'cd ruby/command-t; ruby extconf.rb; make'}
 
@@ -142,6 +139,9 @@ if has('nvim')
 
   " Enable Neovim support for true terminal colors
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+  " Leave TERMINAL mode when hitting escape, as expected
+  tnoremap <esc> <C-\><C-n>
 endif
 
 " Mappings
@@ -163,7 +163,7 @@ nnoremap <leader>b :CommandTBuffer<CR>
 autocmd FileType gitcommit set textwidth=72
 
 " Enable spell checking on certain file types
-autocmd FileType {markdown,gitcommit} set spell
+autocmd FileType {markdown,gitcommit} set spell complete+=kspell
 
 " Set syntax highlighting for specific file types
 autocmd BufRead,BufNewFile *.eslintrc set filetype=json
@@ -172,17 +172,15 @@ autocmd BufRead,BufNewFile *.tsx set filetype=typescript
 " Some file types use hard tabs
 autocmd FileType {make,gitconfig} set noexpandtab
 
+" Make `gf` work properly
+autocmd FileType {javascript,jsx,javascript.jsx} set suffixesadd+='.js,.jsx'
+autocmd FileType {typescript} set suffixesadd+='.ts,.tsx'
+
 " Events
 " =============================================================================
 
-" Auto save files when focus is lost
-autocmd FocusLost * silent! wa
-
-" Trigger linter whenever saving/reading a file
-augroup NeomakeLinter
-  autocmd!
-  autocmd BufWritePost,BufReadPost * Neomake
-augroup end
+" Autotically save files on focus change
+autocmd FocusLost,BufLeave * silent! w
 
 " Theming
 " =============================================================================
@@ -220,15 +218,13 @@ let g:tern#arguments = ['--persistent']
 " Linting
 " =============================================================================
 
-let g:neomake_highlight_columns = 0
-
-" All linting errors show be bullets
-let g:neomake_error_sign = {'text': '●', 'texthl': 'NeomakeErrorSign'}
-let g:neomake_warning_sign = {'text': '●', 'texthl': 'NeomakeWarningSign'}
-
 " Prettier linting errors
-highlight NeomakeErrorSign ctermfg=124 cterm=bold
-highlight NeomakeWarningSign ctermfg=31 cterm=bold
+highlight ALEErrorSign ctermfg=124 cterm=bold
+highlight ALEWarningSign ctermfg=31 cterm=bold
+
+" Custom linting symbols
+let g:ale_sign_error = '●'
+let g:ale_sign_warning = '●'
 
 " File navigation
 " =============================================================================
