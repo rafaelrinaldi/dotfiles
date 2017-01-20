@@ -15,11 +15,12 @@
     "editor.lineNumbers": "relative",
     "npm-intellisense.scanDevDependencies": true,
     "npm-intellisense.showBuildInLibs": true,
-    "flow.enabled": false,
     "files.insertFinalNewline": true,
     "vim.hlsearch": true,
     "html.format.endWithNewline": true,
     "css.lint.duplicateProperties": "warning",
     "eslint.run": "onSave",
-    "extensions.autoUpdate": true
+    "extensions.autoUpdate": true,
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.fontSize": 14
   }
