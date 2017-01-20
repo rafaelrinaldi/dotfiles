@@ -15,9 +15,8 @@ Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
-Plug 'carlitux/deoplete-ternjs', {'do': 'yarn global add tern --prefix /usr/local'}
+Plug 'carlitux/deoplete-ternjs', {'do': 'npm i tern -g'}
 Plug 'editorconfig/editorconfig-vim'
-Plug 'mhartington/deoplete-typescript', {'do': ':UpdateRemotePlugins'}
 Plug 'mileszs/ack.vim'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'sheerun/vim-polyglot'
@@ -85,7 +84,7 @@ set wildignore+=.git,.svn
 set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg
 set wildignore+=*.sw?
 set wildignore+=.DS_Store
-set wildignore+=node_modules,bower_components,elm-stuff
+set wildignore+=*/node_modules,*/bower_components,*/elm-stuff
 
 " Ignore patterns for netrw
 let g:netrw_list_hide='.*\.git,.*\.DS_Store,.\/node_modules$'
