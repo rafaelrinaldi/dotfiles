@@ -30,15 +30,15 @@
 (setq nlinum-relative-current-symbol "")
 (setq nlinum-relative-offset 0)
 
-(custom-set-variables
-  ;; Theme
- '(custom-enabled-themes (quote (leuven)))
+(require 'rainbow-mode)
+(rainbow-mode +1)
 
-  ;; Start GUI in full size
+(custom-set-variables
+ '(custom-enabled-themes (quote (leuven)))
  '(initial-frame-alist (quote ((fullscreen . maximized))))
-  '(package-selected-packages
-     (quote
-       (editorconfig nlinum-relative evil-visual-mark-mode))))
+ '(package-selected-packages
+   (quote
+    (rainbow-mode editorconfig nlinum-relative evil-visual-mark-mode))))
 
 ;; EditorConfig
 (require 'editorconfig)
