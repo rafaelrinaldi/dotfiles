@@ -8,22 +8,6 @@ echo "Updating Homebrew..."
 
 brew update &> /dev/null
 
-echo "Installing Homebrew stuff..."
-
-# Install Homebrew stuff
-cat ../Brewfile | xargs brew install &> /dev/null
-
-# Install Cask if not available
-if [ -z `which brew cask` ]; then
-  echo "Installing Cask..."
-  brew tap caskroom/cask &> /dev/null
-fi
-
-echo "Installing Cask stuff..."
-
-# Install Cask stuff
-cat ../Caskfile | xargs brew cask install &> /dev/null
-
 # Setup npm credentials if needed
 if [ ! -f $HOME/.npmrc ]; then
   echo "Adding npm credentials"
