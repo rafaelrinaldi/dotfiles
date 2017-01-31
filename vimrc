@@ -11,17 +11,16 @@ call plug#begin()
 
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'Raimondi/delimitMate'
-Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+" Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
-Plug 'carlitux/deoplete-ternjs', {'do': 'npm i tern -g'}
+" Plug 'carlitux/deoplete-ternjs', {'do': 'npm i tern -g'}
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'mileszs/ack.vim'
-Plug 'pbrisbin/vim-mkdir'
 Plug 'sheerun/vim-polyglot'
-Plug 'steelsojka/deoplete-flow', {'do': ':UpdateRemotePlugins'}
-Plug 'ternjs/tern_for_vim', {'do': 'npm install'}
+" Plug 'steelsojka/deoplete-flow', {'do': ':UpdateRemotePlugins'}
+" Plug 'ternjs/tern_for_vim', {'do': 'npm i'}
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -29,9 +28,8 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 Plug 'wakatime/vim-wakatime'
-Plug 'wincent/command-t', {'do': 'cd ruby/command-t; ruby extconf.rb; make'}
 
 call plug#end()
 
@@ -41,10 +39,10 @@ call plug#end()
 " Automatic plugin indent
 filetype plugin indent on
 
-" Show line numbers
+" Line numbers
 set number
 
-" Numbers are relative to cursor
+" Relative numbers
 set relativenumber
 
 " Set the title at top of tab to be the filename
@@ -71,10 +69,6 @@ set cursorline
 
 " Highlight column 80
 set colorcolumn=80
-set linebreak
-
-" Give one virtual space at end of line
-set virtualedit=onemore
 
 " Complete files like a shell
 set wildmenu wildmode=full
@@ -84,18 +78,12 @@ set wildignore+=.git,.svn
 set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg
 set wildignore+=*.sw?
 set wildignore+=.DS_Store
-set wildignore+=*/node_modules,*/bower_components,*/elm-stuff
-
-" Ignore patterns for netrw
-let g:netrw_list_hide='.*\.git,.*\.DS_Store,.\/node_modules$'
+set wildignore+=node_modules
 
 " Set highlight for search
 set hlsearch
 
-" Case-insensitive searching
-set ignorecase
-
-" But case-sensitive if expression contains a capital letter
+" Be smart when searching
 set smartcase
 
 " Display status bar
@@ -129,6 +117,27 @@ set autowriteall
 " Omni completion menu options
 set cot-=preview
 
+" GUI
+" =============================================================================
+
+if has('gui_running')
+  set guifont=Input\ Mono\ Regular:h16
+
+  " Force a screen render when changing modes
+  inoremap <special> <Esc> <Esc>hl
+
+  " Fix the way cursor looks
+  set guicursor+=i:blinkwait0
+
+  " Remove scroll bars
+  set guioptions-=T
+  set guioptions-=R
+  set guioptions-=L
+
+  " Display the default tab style
+  set guioptions-=e
+endif
+
 " Neovim
 " =============================================================================
 
@@ -149,11 +158,11 @@ endif
 " Remap the space key to toggle current fold
 nnoremap <tab> za
 
-" Trigger CommandT
-nnoremap <leader>t :CommandT<CR>
+" Search for files
+nnoremap <leader>t :CtrlP<CR>
 
-" Start search with Command-T on active buffers
-nnoremap <leader>b :CommandTBuffer<CR>
+" Search for buffers
+nnoremap <leader>b :CtrlPBuffer<CR>
 
 " File specific
 " =============================================================================
@@ -166,14 +175,17 @@ autocmd FileType {markdown,gitcommit} set spell complete+=kspell
 
 " Set syntax highlighting for specific file types
 autocmd BufRead,BufNewFile *.eslintrc set filetype=json
-autocmd BufRead,BufNewFile *.tsx set filetype=typescript
 
 " Some file types use hard tabs
 autocmd FileType {make,gitconfig} set noexpandtab
 
 " Make `gf` work properly
-autocmd FileType {javascript,jsx,javascript.jsx} set suffixesadd+='.js,.jsx'
-autocmd FileType {typescript} set suffixesadd+='.ts,.tsx'
+autocmd FileType {javascript.jsx} set suffixesadd+='.js,.jsx'
+
+" Setup prettier if available
+if executable('prettier')
+  autocmd FileType {javascript.jsx} set formatprg=prettier\ --single-quote\ --trailing-comma\ --no-bracket-spacing\ --stdin
+endif
 
 " Events
 " =============================================================================
@@ -228,19 +240,25 @@ let g:ale_sign_warning = '●'
 " File navigation
 " =============================================================================
 
-" Uses ripgrep for fastest possible grepping (if available)
+" Use ripgrep over Grep
 if executable('rg')
-  " Point binary to Vim
   set grepprg=rg\ --vimgrep
 
-  " Point binary to Ack
-  let g:ackprg = 'rg --vimgrep'
+  " Apply `.gitignore` rules and pipe filtered results to ripgrep
+  let g:ctrlp_user_command = ['.git', 'cd %s; rg --files-with-matches ".*"', 'find %s -type f']
+  let g:ctrlp_use_caching = 0
+
+  " Simple command to populate the quickfix list with match results
+  if !exists(':Find')
+    command -nargs=+ -complete=file -bar Find silent! grep! <args>|cwindow|redraw!
+    nnoremap \ :Find<SPACE>
+  endif
 endif
 
 " Misc
 " =============================================================================
 
 " Load config per project if `.lvimrc` is present
-if filereadable(glob('./.lvimrc'))
+if filereadable($PWD .'/.lvimrc')
   source ./.lvimrc
 endif
