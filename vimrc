@@ -11,16 +11,12 @@ call plug#begin()
 
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'Raimondi/delimitMate'
-" Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
-" Plug 'carlitux/deoplete-ternjs', {'do': 'npm i tern -g'}
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'sheerun/vim-polyglot'
-" Plug 'steelsojka/deoplete-flow', {'do': ':UpdateRemotePlugins'}
-" Plug 'ternjs/tern_for_vim', {'do': 'npm i'}
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -28,41 +24,66 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
-" Plug 'w0rp/ale'
 Plug 'wakatime/vim-wakatime'
+
+" Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+" Plug 'carlitux/deoplete-ternjs', {'do': 'npm i tern -g'}
+" Plug 'w0rp/ale'
+" Plug 'steelsojka/deoplete-flow', {'do': ':UpdateRemotePlugins'}
+" Plug 'ternjs/tern_for_vim', {'do': 'npm i'}
 
 call plug#end()
 
 " General settings
 " =============================================================================
 
-" Automatic plugin indent
+" Vim doesn't like Fish
+set shell=/bin/bash
+
+" Load plugins based on file type
 filetype plugin indent on
 
-" Line numbers
-set number
-
-" Relative numbers
-set relativenumber
+" Enable syntax Highlighting
+syntax on
 
 " Set the title at top of tab to be the filename
 set title
 
-" Automatic syntax
-syntax enable
+" Line numbers
+set number relativenumber
 
-" Tab
-set tabstop=2 shiftwidth=2 expandtab
+" Set default tabs as two spaces
+set expandtab softtabstop=2 shiftwidth=2 shiftround
 
-" Backspace
-set backspace=2
+" Backspace behaves as expected
+set backspace=indent,eol,start
 
-" Display hidden whitespace
+" Enable switching buffers before saving them
+set hidden
+
+" Display status bar
+set laststatus=2
+
+" Last commands auto completion
+set showcmd
+
+" Highlight while searching
+set incsearch
+
+" Highlight search keywords
+set hlsearch
+
+" Smart search case
+set smartcase
+
+" Change the position where new windows are opened
+set splitbelow
+set splitright
+
+" Display hidden characters
+set list
 set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:·
 set showbreak=↪\
-
-" Display hidden characters by default
-set list
 
 " Highlight current line
 set cursorline
@@ -80,35 +101,16 @@ set wildignore+=*.sw?
 set wildignore+=.DS_Store
 set wildignore+=node_modules
 
-" Set highlight for search
-set hlsearch
-
-" Be smart when searching
-set smartcase
-
-" Display status bar
-set laststatus=2
-
-" Vim backup files
-set undofile
-set backupdir=~/.vim/tmp
-set directory=~/.vim/tmp
-set undodir=~/.vim/tmp
-
 " Enable mouse in all modes because why not
 set mouse=a
 
-" Change the position where panes are opened
-set splitbelow
-set splitright
-
-" Enable tree folding
+" Enable folding
 set foldenable
 set foldnestmax=10
 set foldlevelstart=10
 set foldmethod=indent
 
-" Show ruler
+" Show ruler on status line
 set ruler
 
 " Save file when switching buffers
@@ -117,17 +119,32 @@ set autowriteall
 " Omni completion menu options
 set cot-=preview
 
+" Vim backup files organized by context
+set backup
+set backupdir=$HOME/.vim/files/backup/
+set backupskip=
+set directory=$HOME/.vim/files/swap/
+set updatecount=100
+set undofile
+set undodir=$HOME/.vim/files/undo/
+
+" Always report changed lines
+set report=0
+
+" Only redraw when necessary
+set lazyredraw
+
+" Only highlight first 200 columns
+set synmaxcol=200
+
 " GUI
 " =============================================================================
 
 if has('gui_running')
-  set guifont=Input\ Mono\ Regular:h16
+  set guifont=Input\ Mono:h16
 
-  " Force a screen render when changing modes
+  " Force render when switching modes
   inoremap <special> <Esc> <Esc>hl
-
-  " Fix the way cursor looks
-  set guicursor+=i:blinkwait0
 
   " Remove scroll bars
   set guioptions-=T
@@ -136,6 +153,8 @@ if has('gui_running')
 
   " Display the default tab style
   set guioptions-=e
+
+  set ttyfast
 endif
 
 " Neovim
@@ -155,7 +174,7 @@ endif
 " Mappings
 " =============================================================================
 
-" Remap the space key to toggle current fold
+" Remap the tab key to toggle current fold
 nnoremap <tab> za
 
 " Search for files
