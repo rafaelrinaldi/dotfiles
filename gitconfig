@@ -1,45 +1,6 @@
-[user]
-  name = Rafael Rinaldi
-  email = rafael@rinaldi.io
-
-[github]
-  user = rafaelrinaldi
-
-[hub]
-  protocol = https
-
-[alias]
-  branches = branch -a
-  bypass = update-index --assume-unchanged
-  c = commit -v
-  cleanup = !git-cleanup
-  co = checkout
-  diff = diff --color-words --ignore-space-at-eol
-  l = log --pretty='format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d %C(green)%an%C(reset), %C(dim)%ar' --date=short
-  ls = ls-tree --full-tree -r HEAD
-  please = push --force-with-lease
-  remotes = remote -v
-  s = status -sb
-  tags = tag -l
-  undo = reset --soft HEAD^1
-  what = whatchanged --decorate
-
-[mergetool "Kaleidoscope"]
-  cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-  trustexitcode = true
-
-[merge]
-  tool = Kaleidoscope
-  summary = true
-
-[difftool "Kaleidoscope"]
-  cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
-
-[difftool]
-  prompt = false
-
 [mergetool]
   prompt = false
+  keepBackup = true
 
 [diff]
   tool = Kaleidoscope
@@ -48,10 +9,13 @@
   ; Start Vim in insert mode
   editor = vim +start
   whitespace = cr-at-eol
-	pager = diff-so-fancy | less --tabs=4 -RFX
+  pager = diff-so-fancy | less --tabs=2 -RFX
+  ignorecase = false
+  excludesfile = /Users/rafaelrinaldi/.gitignore
 
 [commit]
   template = ~/.gitmessage
+	gpgsign = true
 
 [color]
   ui = auto
@@ -68,6 +32,15 @@
   changed = green
   untracked = cyan
 
+[color "diff-highlight"]
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
+
+[url "git@github.com:"]
+  insteadOf = https://github.com/
+
 ; Use `origin` as the default remote on the `master` branch in all cases
 [branch "master"]
   remote = origin
@@ -79,12 +52,12 @@
 [push]
   default = current
 
-[rebase]
-  autosquash = true
-[url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
-[color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green bold
-	newHighlight = green bold 22
+[pull]
+  rebase = true
+
+[help]
+  autocorrect = 1
+
+[mergetool "Kaleidoscope"]
+  cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+  trustexitcode = true
