@@ -16,7 +16,7 @@ fi
 
 echo "Updating Vim plugins..."
 
-vim +PluginUpdate +qall &> /dev/null
+vim +PluginUpdate +PluginUpgrade +qall &> /dev/null
 
 echo "Updating VS Code settings..."
 
