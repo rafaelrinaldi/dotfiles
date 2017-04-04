@@ -1,19 +1,15 @@
 module.exports = {
   config: {
-    fontSize: 16,
-    fontFamily: '"SF Mono", Menlo, "DejaVu Sans Mono", "Lucida Console", monospace',
-    cursorShape: 'BLOCK',
-    padding: '10px',
     bell: false,
+    cursorShape: 'BLOCK',
+    fontFamily: 'Input Mono Narrow',
+    fontSize: 15,
+    padding: '8px 12px',
+    termCSS: 'x-screen x-row { font-variant-ligatures: initial }'
   },
 
   plugins: [
-    'hyper-blink',
     'hypercwd',
-    'hyper-papercolor',
-    'hyper-terminal-tabs'
-  ],
-
-  localPlugins: [
+    'hyper-papercolor'
   ]
-};
+}
