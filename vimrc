@@ -16,6 +16,9 @@ Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/seoul256.vim'
+Plug 'maralla/completor.vim', { 'do': 'make js' }
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
@@ -24,13 +27,8 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
+Plug 'w0rp/ale'
 Plug 'wakatime/vim-wakatime'
-
-" Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-" Plug 'carlitux/deoplete-ternjs', {'do': 'npm i tern -g'}
-" Plug 'w0rp/ale'
-" Plug 'steelsojka/deoplete-flow', {'do': ':UpdateRemotePlugins'}
-" Plug 'ternjs/tern_for_vim', {'do': 'npm i'}
 
 call plug#end()
 
@@ -82,7 +80,7 @@ set splitright
 
 " Display hidden characters
 set list
-set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:·
+set listchars=tab:▸\ ,trail:·,nbsp:·
 set showbreak=↪\
 
 " Highlight current line
@@ -95,14 +93,12 @@ set colorcolumn=80
 set wildmenu wildmode=full
 
 " Specify files to ignore on wildmenu
-set wildignore+=.git,.svn
-set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg
+set wildignore+=.git/
+set wildignore+=*.jpe?g,*.bmp,*.gif,*.png
 set wildignore+=*.sw?
 set wildignore+=.DS_Store
-set wildignore+=node_modules
-
-" Enable mouse in all modes because why not
-set mouse=a
+set wildignore+=node_modules/
+set wildignore+=*.lock
 
 " Enable folding
 set foldenable
@@ -114,7 +110,8 @@ set foldmethod=indent
 set ruler
 
 " Save file when switching buffers
-set autowriteall
+set autowrite
+set autoread
 
 " Omni completion menu options
 set cot-=preview
@@ -137,11 +134,14 @@ set lazyredraw
 " Only highlight first 200 columns
 set synmaxcol=200
 
+" Enable mouse
+set mouse=a
+
 " GUI
 " =============================================================================
 
 if has('gui_running')
-  set guifont=Input\ Mono:h16
+  set guifont=Input\ Mono\ Narrow:h15
 
   " Force render when switching modes
   inoremap <special> <Esc> <Esc>hl
@@ -183,6 +183,12 @@ nnoremap <leader>t :CtrlP<CR>
 " Search for buffers
 nnoremap <leader>b :CtrlPBuffer<CR>
 
+" Map location list open to resemble VSCode
+nnoremap <leader>m :lopen<CR>
+
+" Enter "zen" mode
+nnoremap <leader>f :Goyo<CR>
+
 " File specific
 " =============================================================================
 
@@ -193,12 +199,12 @@ autocmd FileType gitcommit set textwidth=72
 autocmd FileType {markdown,gitcommit} set spell complete+=kspell
 
 " Set syntax highlighting for specific file types
-autocmd BufRead,BufNewFile *.eslintrc set filetype=json
+autocmd BufRead,BufNewFile *.{eslint,babel}rc set filetype=json
 
 " Some file types use hard tabs
 autocmd FileType {make,gitconfig} set noexpandtab
 
-" Make `gf` work properly
+" Make `gf` work properly for JavaScript files
 autocmd FileType {javascript.jsx} set suffixesadd+='.js,.jsx'
 
 " Setup prettier if available
@@ -215,14 +221,41 @@ autocmd FocusLost,BufLeave * silent! w
 " Theming
 " =============================================================================
 
-set background=light
-colorscheme PaperColor
+fun! s:light()
+  set background=light
+  colorscheme PaperColor
+  highlight CursorLineNr ctermbg=254
+endfun
 
-" Enable italic text
-highlight Comment cterm=italic
+fun! s:dark()
+  set background=dark
+  colorscheme seoul256
+endfun
 
-" Display current line number in bold text
-highlight CursorLineNr cterm=bold
+fun! s:styles()
+  highlight Comment cterm=italic
+  highlight CursorLineNr cterm=bold
+endfun
+
+fun! s:theme(theme)
+  if a:theme == 0
+    call s:dark()
+  else
+    call s:light()
+  endif
+
+  call s:styles()
+endfun
+
+if !exists(':ThemeDark')
+  command -nargs=0 ThemeDark call s:theme(0)
+endif
+
+if !exists(':ThemeLight')
+  command -nargs=0 ThemeLight call s:theme(1)
+endif
+
+exec 'ThemeDark'
 
 " Auto completion
 " =============================================================================
@@ -232,34 +265,37 @@ augroup omnifuncs
   autocmd!
   autocmd FileType css,scss setlocal omnifunc=csscomplete#CompleteCSS
   autocmd FileType html,xhtml,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript.jsx setlocal omnifunc=javascriptcomplete#CompleteJS
   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 augroup end
 
-" Deoplete
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#enable_refresh_always = 1
-
-" Tern
-let g:tern_request_timeout = 1
-let g:tern#arguments = ['--persistent']
+" Completor
+let g:completor_css_omni_trigger = '([\w-]+|@[\w-]*|[\w-]+:\s*[\w-]*)$'
 
 " Linting
 " =============================================================================
 
 " Prettier linting errors
-highlight ALEErrorSign ctermfg=124 cterm=bold
-highlight ALEWarningSign ctermfg=31 cterm=bold
+highlight ALEErrorSign ctermfg=125 cterm=bold
+highlight ALEWarningSign ctermfg=220 cterm=bold
 
 " Custom linting symbols
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 1
 let g:ale_sign_error = '●'
 let g:ale_sign_warning = '●'
+
+" Goyo (zen mode)
+" =============================================================================
+
+let g:goyo_height = '95%'
 
 " File navigation
 " =============================================================================
 
-" Use ripgrep over Grep
+" Use ripgrep instead of Grep
 if executable('rg')
   set grepprg=rg\ --vimgrep
 
@@ -270,7 +306,6 @@ if executable('rg')
   " Simple command to populate the quickfix list with match results
   if !exists(':Find')
     command -nargs=+ -complete=file -bar Find silent! grep! <args>|cwindow|redraw!
-    nnoremap \ :Find<SPACE>
   endif
 endif
 
