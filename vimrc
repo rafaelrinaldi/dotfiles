@@ -9,24 +9,32 @@ set fileencoding=utf-8
 
 call plug#begin()
 
-Plug 'NLKNguyen/papercolor-theme'
 Plug 'Raimondi/delimitMate'
 Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'ervandew/supertab'
+Plug 'guns/vim-sexp', { 'for': 'clojure' }
 Plug 'junegunn/goyo.vim'
+Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'clojure' }
 Plug 'junegunn/seoul256.vim'
-Plug 'maralla/completor.vim', { 'do': 'make js' }
+Plug 'maralla/completor.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-salve'
+Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
+Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
 Plug 'w0rp/ale'
 Plug 'wakatime/vim-wakatime'
 
@@ -43,6 +51,9 @@ filetype plugin indent on
 
 " Enable syntax Highlighting
 syntax on
+
+" Use backspace as leader
+let mapleader = "\<BS>"
 
 " Set the title at top of tab to be the filename
 set title
@@ -91,6 +102,7 @@ set colorcolumn=80
 
 " Complete files like a shell
 set wildmenu wildmode=full
+set completeopt=longest,menuone
 
 " Specify files to ignore on wildmenu
 set wildignore+=.git/
@@ -137,24 +149,42 @@ set synmaxcol=200
 " Enable mouse
 set mouse=a
 
+" Keyboard mappings
+" =============================================================================
+
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+vmap <Leader>p "+p
+vmap <Leader>P "+P
+
 " GUI
 " =============================================================================
 
 if has('gui_running')
-  set guifont=Input\ Mono\ Narrow:h15
+  set guifont=Iosevka\ Slab:h17
 
-  " Force render when switching modes
-  inoremap <special> <Esc> <Esc>hl
+  " Don't blink the cursor
+  set guicursor+=n-v-i:blinkon0
+  set guicursor+=n-v-i:blinkwait0
 
   " Remove scroll bars
-  set guioptions-=T
-  set guioptions-=R
+  set guioptions-=t
+  set guioptions-=r
   set guioptions-=L
 
   " Display the default tab style
   set guioptions-=e
 
+  " Better line height
+  set linespace=1
+
+  set macligatures
   set ttyfast
+
+  " Force render when switching modes
+  inoremap <special> <Esc> <Esc>hl
 endif
 
 " Neovim
@@ -175,19 +205,22 @@ endif
 " =============================================================================
 
 " Remap the tab key to toggle current fold
-nnoremap <tab> za
+nnoremap <Space> za
 
 " Search for files
-nnoremap <leader>t :CtrlP<CR>
+nnoremap <Leader>t :CtrlP<CR>
 
 " Search for buffers
-nnoremap <leader>b :CtrlPBuffer<CR>
+nnoremap <Leader>b :CtrlPBuffer<CR>
 
-" Map location list open to resemble VSCode
-nnoremap <leader>m :lopen<CR>
+" Bring up the QuickFix list
+nnoremap <Leader>q :copen<CR>
+
+" Bring up the location list
+nnoremap <Leader>l :lopen<CR>
 
 " Enter "zen" mode
-nnoremap <leader>f :Goyo<CR>
+nnoremap <Leader>f :Goyo<CR>
 
 " File specific
 " =============================================================================
@@ -221,41 +254,17 @@ autocmd FocusLost,BufLeave * silent! w
 " Theming
 " =============================================================================
 
-fun! s:light()
-  set background=light
-  colorscheme PaperColor
-  highlight CursorLineNr ctermbg=254
-endfun
+set background=dark
 
-fun! s:dark()
-  set background=dark
-  colorscheme seoul256
-endfun
-
-fun! s:styles()
-  highlight Comment cterm=italic
-  highlight CursorLineNr cterm=bold
-endfun
-
-fun! s:theme(theme)
-  if a:theme == 0
-    call s:dark()
-  else
-    call s:light()
-  endif
-
-  call s:styles()
-endfun
-
-if !exists(':ThemeDark')
-  command -nargs=0 ThemeDark call s:theme(0)
+if has('gui_running')
+  " Make sure colorscheme looks consistent on GUI
+  let g:seoul256_background = 236
 endif
 
-if !exists(':ThemeLight')
-  command -nargs=0 ThemeLight call s:theme(1)
-endif
+colorscheme seoul256
 
-exec 'ThemeDark'
+highlight Comment cterm=italic gui=italic
+highlight CursorLineNr cterm=bold gui=bold
 
 " Auto completion
 " =============================================================================
@@ -270,20 +279,17 @@ augroup omnifuncs
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 augroup end
 
-" Completor
-let g:completor_css_omni_trigger = '([\w-]+|@[\w-]*|[\w-]+:\s*[\w-]*)$'
-
 " Linting
 " =============================================================================
 
 " Prettier linting errors
-highlight ALEErrorSign ctermfg=125 cterm=bold
-highlight ALEWarningSign ctermfg=220 cterm=bold
+highlight ALEErrorSign cterm=bold
+highlight ALEWarningSign cterm=bold
 
 " Custom linting symbols
-let g:ale_lint_on_enter = 1
+let g:ale_lint_on_enter = 0
 let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 1
+let g:ale_lint_on_text_changed = 0
 let g:ale_sign_error = '●'
 let g:ale_sign_warning = '●'
 
@@ -291,6 +297,11 @@ let g:ale_sign_warning = '●'
 " =============================================================================
 
 let g:goyo_height = '95%'
+
+" Git Gutter
+" =============================================================================
+
+let g:gitgutter_override_sign_column_highlight = 0
 
 " File navigation
 " =============================================================================
@@ -308,6 +319,30 @@ if executable('rg')
     command -nargs=+ -complete=file -bar Find silent! grep! <args>|cwindow|redraw!
   endif
 endif
+
+" Completor
+" =============================================================================
+
+" Enable CSS completion
+let g:completor_css_omni_trigger = '([\w-]+|@[\w-]*|[\w-]+:\s*[\w-]*)$'
+
+" SuperTab
+" =============================================================================
+
+let g:SuperTabDefaultCompletionType = '<c-n>'
+
+" Clojure
+" =============================================================================
+
+augroup clojure
+  autocmd!
+  autocmd FileType clojure RainbowParentheses
+  autocmd FileType clojure setlocal commentstring=;;\ %s
+  autocmd Filetype clojure nnoremap <Leader>r :Require<CR>
+augroup end
+
+" So `salve.vim` attempts to make a REPL connection automatically
+let g:salve_auto_start_repl = 1
 
 " Misc
 " =============================================================================
