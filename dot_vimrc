@@ -1,0 +1,250 @@
+set nocompatible
+
+" UTF-8 all the things
+set fileencoding=utf-8
+
+" Set the mapleader and maplocalleader
+let mapleader=","
+
+" Load plugins based on file type
+filetype plugin indent on
+
+" Enable syntax Highlighting
+syntax on
+
+" Set the title at top of tab to be the filename
+set title
+
+" Line numbers
+" set number relativenumber
+
+" Set default tabs as two spaces
+set tabstop=2 shiftwidth=2 expandtab
+
+" Backspace behaves as expected
+set backspace=indent,eol,start
+
+" Enable switching buffers before saving them
+set hidden
+
+" Display status bar
+set laststatus=2
+
+" Last commands auto completion
+set showcmd
+
+" Highlight while searching
+set incsearch
+
+" Highlight search keywords
+set hlsearch
+
+" Smart search case"
+set ignorecase
+set smartcase
+
+" Use new regular expression engine
+" NOTE: fixes perf issues with syntax highlighting
+set re=0
+
+" Change the position where new windows are opened
+set splitright
+set splitbelow
+
+" Highlight current line
+set cursorline
+
+" Highlight column 80
+set colorcolumn=80
+
+" Complete files like a shell
+set wildmenu wildmode=full
+set completeopt=longest,menuone
+
+" Specify files to ignore on wildmenu
+set wildignore+=.git/
+set wildignore+=*.jpe?g,*.bmp,*.gif,*.png
+set wildignore+=*.sw?
+set wildignore+=.DS_Store
+set wildignore+=node_modules/
+set wildignore+=*.lock
+
+" Enable folding
+set foldenable
+set foldnestmax=10
+set foldlevelstart=10
+set foldmethod=indent
+
+" Text auto wrap formatting
+set textwidth=80
+set formatoptions+=t
+
+" Show ruler on status line
+set ruler
+
+" Save file when switching buffers
+set autowrite
+set autoread
+
+" Omni completion menu options
+set cot-=preview
+
+" Vim backup files organized by context
+set backup
+set backupdir=$HOME/.vim/files/backup/
+set backupskip=
+set directory=$HOME/.vim/files/swap/
+set updatecount=100
+set undofile
+set undodir=$HOME/.vim/files/undo/
+
+" Always report changed lines
+set report=0
+
+" Enable mouse
+set mouse=a
+
+" Highlight matching parenthesis
+set showmatch
+
+" Change CWD when I open a file
+" set autochdir
+
+" Don't use swapfile
+set noswapfile
+
+" Copy and paste should just work
+set clipboard^=unnamed,unnamedplus
+
+" Improve redrawing
+set ttyfast
+set lazyredraw
+
+" For modern terminals
+if has('termguicolors')
+  set termguicolors
+endif
+
+" Theming
+" =============================================================================
+
+if has('mac')
+  let appearance = system('defaults read -g AppleInterfaceStyle')
+
+  if appearance =~ 'Dark'
+    set background=dark
+    colorscheme habamax
+  else
+    set background=light
+    colorscheme shine
+  endif
+else
+  " Default settings for other operating systems
+  set background=dark
+  colorscheme habamax
+endif
+
+highlight Normal guibg=NONE ctermbg=NONE
+highlight NonText guibg=NONE ctermbg=NONE
+highlight Comment cterm=italic gui=italic
+highlight CursorLineNr cterm=bold gui=bold
+
+" Mappings
+" =============================================================================
+" Remap the tab key to toggle current fold
+nnoremap <Tab> za
+
+" Kill search highlighting when pressing escape
+nnoremap <silent> <Esc> <Esc>:noh<CR>
+
+" Copy to clipboard
+vmap <leader>y "+y
+
+" Search for files
+nnoremap <leader><space> :Files $PWD<cr>
+
+" Search for buffers
+nnoremap <leader>, :Buffers<cr>
+
+" Text search
+nnoremap <leader>/ :Rg<cr>
+
+" Git
+nnoremap <leader>gf :GFiles<cr>
+nnoremap <leader>gs :GFiles?<cr>
+
+" Bring up the QuickFix list
+nnoremap <leader>q :copen<cr>
+
+" Bring up the location list
+nnoremap <leader>l :lopen<cr>
+
+" File specific
+" =============================================================================
+
+" Limits the body of Git commit messages to 72 characters
+autocmd FileType gitcommit set textwidth=72
+
+" Enable spell checking on certain file types
+autocmd FileType {markdown,gitcommit} set spell complete+=kspell
+
+" Set syntax highlighting for specific file types
+autocmd BufRead,BufNewFile *.{eslint,babel}rc set filetype=json
+
+" Some file types use hard tabs
+autocmd FileType {make,gitconfig} set noexpandtab
+
+" Make `gf` work properly for JavaScript files
+autocmd FileType {javascript.jsx,javascriptreact} set suffixesadd+='.js,.jsx'
+
+" Make `gf` work properly for TypeScript files
+autocmd FileType {typescriptreact} set suffixesadd+='.ts,.tsx'
+
+" Events
+" =============================================================================
+
+" Autotically save files on focus change
+autocmd FocusLost,BufLeave * silent! w
+
+" Use ripgrep instead of Grep
+if executable('rg')
+  set grepprg=rg\ --vimgrep
+endif
+
+" FZF
+" =============================================================================
+
+if executable('fzf')
+  set rtp+=/opt/homebrew/opt/fzf
+
+  " Ensure FZF uses the current Vim colorscheme
+  let g:fzf_colors =
+        \ { 'fg':         ['fg', 'Normal'],
+        \ 'bg':         ['bg', 'Normal'],
+        \ 'preview-bg': ['bg', 'NormalFloat'],
+        \ 'hl':         ['fg', 'Comment'],
+        \ 'fg+':        ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+        \ 'bg+':        ['bg', 'CursorLine', 'CursorColumn'],
+        \ 'hl+':        ['fg', 'Statement'],
+        \ 'info':       ['fg', 'PreProc'],
+        \ 'border':     ['fg', 'Ignore'],
+        \ 'prompt':     ['fg', 'Conditional'],
+        \ 'pointer':    ['fg', 'Exception'],
+        \ 'marker':     ['fg', 'Keyword'],
+        \ 'spinner':    ['fg', 'Label'],
+        \ 'header':     ['fg', 'Comment'] }
+
+  " Popup window (center of the screen)
+  let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+endif
+
+" sneak.vim
+let g:sneak#label = 1
+
+" Load up all plugins
+packloadall
+
+" Load config per project if `.lvimrc` is present
+if filereadable($PWD .'/.lvimrc')
+  source ./.lvimrc
+endif

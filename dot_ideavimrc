@@ -1,0 +1,36 @@
+set clipboard+=unnamed
+set incsearch
+set nonumber norelativenumber
+
+set surround
+set NERDTree
+set commentary
+
+Plug 'justinmk/vim-sneak'
+
+set ideajoin
+set ideastatusicon=gray
+set idearefactormode=keep
+
+let mapleader = ","
+
+set visualbell
+set noerrorbells
+
+map <leader><space> :find<CR>
+map <leader>t :find<CR>
+map <leader>s <Action>(FindInPath)
+map <leader>a <Action>(GotoAction)
+map <leader>b <Action>(RecentFiles)
+map <leader>z <Action>(ToggleDistractionFreeMode)
+map <leader>r <Action>(Replace)
+map <leader>f <Action>(ReformatCode)
+map <leader>n <Action>(FileChooser.NewFolder)
+map <leader>c <Action>(ActivateTODOToolWindow)
+map <leader>e :NERDTreeToggle<CR>
+
+nnoremap <Tab> :action CollapseSelection<CR>
+" nnoremap - :NERDTreeFind<CR>
+
+" Don't use Ex mode, use Q for formatting.
+map Q gq

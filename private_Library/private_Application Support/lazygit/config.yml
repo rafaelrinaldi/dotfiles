@@ -1,0 +1,19 @@
+gui:
+  showFileTree: true
+  mouseEvents: true
+  expandFocusedSidePanel: true
+  showDivergenceFromBaseBranch: arrowAndNumber
+
+git:
+  autoForwardBranches: allBranches
+  paging:
+    colorArg: always
+    pager: diff-so-fancy
+
+keybinding:
+  universal:
+    quit: "q"
+    return: "<esc>"
+  commits:
+    moveDownCommit: "<c-j>"
+    moveUpCommit: "<c-k>"

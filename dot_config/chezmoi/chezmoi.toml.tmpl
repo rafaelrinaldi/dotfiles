@@ -1,0 +1,27 @@
+{{- $work_mode := true -}}
+{{- if eq .chezmoi.hostname "winchester" -}}
+{{-   $work_mode = false -}}
+{{- end -}}
+
+[data]
+  work_mode = {{ $work_mode }}
+
+{{- if $work_mode }}
+  email = {{ (bitwardenSecrets "9e743c22-18f3-4b2d-9ef5-b31c016d28fc").value }}
+  github_token = {{ (bitwardenSecrets "3315f829-6b20-4d5a-9a57-b1c5016e92c6").value }}
+  github_user = {{ (bitwardenSecrets "add3fede-61f5-4cc7-ab4d-b31c016ceffd").value }}
+  gpr_api_key = {{ (bitwardenSecrets "3cc03767-62bb-4271-80b4-b1c5016e0327").value }}
+  gpr_user = {{ (bitwardenSecrets "0fa94c91-39b7-49a9-99cf-b1c5016db9d4").value }}
+  match_password  = {{ (bitwardenSecrets "a19aa8ba-e036-4d69-a7f9-b1c5016e5af0").value }}
+  npm_token_read = {{ (bitwardenSecrets "99afadb1-d739-4075-b6e8-b31c01782416").value }}
+  npm_token_publish = {{ (bitwardenSecrets "4c041add-74d2-4f52-b782-b31c01785890").value }}
+  segment_typewriter_token = {{ (bitwardenSecrets "db9dd19a-008f-4074-8212-b1c5016e44b5").value }}
+{{- else }}
+  email = {{ (bitwardenSecrets "2d0f7efb-dd3a-4b1d-803b-b31c016d16c4").value }}
+  github_token = {{ (bitwardenSecrets "373dc043-3753-426f-a00b-b1c5016e28ed").value }}
+  github_user = {{ (bitwardenSecrets "82670aeb-a38d-43c1-b18a-b31c016cdb9b").value }}
+  npm_token = {{ (bitwardenSecrets "13ffd043-ab6e-4feb-9794-b31c017d5fd7").value }}
+{{- end }}
+
+[template]
+  options = ["missingkey=error"]
