@@ -1,2 +1,0 @@
-EXCLUDES="dotfiles.png README.md LICENSE"
-DOTFILES_DIRS="$HOME/dotfiles"
