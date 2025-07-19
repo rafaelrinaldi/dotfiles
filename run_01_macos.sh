@@ -138,8 +138,7 @@ for app in "Activity Monitor" \
     "cfprefsd" \
     "Dock" \
     "Finder" \
-    "SystemUIServer" \
-    "Terminal"; do
+    "SystemUIServer"; do
     killall "${app}" &> /dev/null || true
 done
 
