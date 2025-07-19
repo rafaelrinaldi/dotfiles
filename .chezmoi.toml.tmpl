@@ -1,0 +1,22 @@
+# vim: set ft=toml :
+{{ if contains "winchester" .chezmoi.hostname }}
+[data]
+  work_mode = false
+  email = {{ (bitwardenFields "item" "chezmoi").email.value | quote }}
+  github_token = {{ (bitwardenFields "item" "chezmoi").github_token.value | quote }}
+  github_user = {{ (bitwardenFields "item" "chezmoi").github_user.value | quote }}
+  npm_token = {{ (bitwardenFields "item" "chezmoi").npm_token.value | quote }}
+{{- else }}
+[data]
+  work_mode = true
+  email = {{ (bitwardenFields "item" "chezmoi").email_work.value | quote }}
+  github_token = {{ (bitwardenFields "item" "chezmoi").github_token_work.value | quote }}
+  github_user = {{ (bitwardenFields "item" "chezmoi").github_user_work.value | quote }}
+  gpr_api_key = {{ (bitwardenFields "item" "chezmoi").gpr_api_key.value | quote }}
+  match_password = {{ (bitwardenFields "item" "chezmoi").match_password.value | quote }}
+  npm_token = {{ (bitwardenFields "item" "chezmoi").npm_token_work.value | quote }}
+  segment_typewriter_token = {{ (bitwardenFields "item" "chezmoi").segment_typewriter_token.value | quote }}
+{{- end }}
+
+[template]
+  options = ["missingkey=error"]

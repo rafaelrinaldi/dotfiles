@@ -1,23 +1,23 @@
 [user]
-	name = Rafael Rinaldi
-	email = {{ .email }
+  name = Rafael Rinaldi
+  email = {{ .email }}
 
 [credential]
   helper = cache --timeout=3600
 
 [url "https://github.com/"]
-	insteadOf = ssh://git@github.com
+  insteadOf = ssh://git@github.com
 
 [push]
-	default = current
-	useForceIfIncludes = true
+  default = current
+  useForceIfIncludes = true
   followTags = true
 
 [pull]
-	rebase = true
+  rebase = true
 
 [core]
-	excludesfile = $HOME/.gitignore
+  excludesfile = $HOME/.gitignore
   pager = diff-so-fancy | less --tabs=4 -RF
   autocrlf = input
 
@@ -31,16 +31,16 @@
   colorMoved = default
 
 [merge]
-	tool = Kaleidoscope
+  tool = Kaleidoscope
   conflictstyle = diff3
   prompt = false
 
 [mergetool "Kaleidoscope"]
-	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-	trustExitCode = true
+  cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+  trustExitCode = true
 
 [mergetool]
-	prompt = false
+  prompt = false
 
 [alias]
   st = status -sb
@@ -53,41 +53,40 @@
   l1 = log --oneline --decorate --graph
   pick-commits = "!f() { git l1 \"${1:-.}\" | fzf --ansi | cut -d' ' -f2; }; f"
   pick-branch = "!f() { git bvb \"$@\" | fzf0 --no-multi --tiebreak=begin --ansi; }; f"
-  commit-info = show --no-patch --date=short --format='%S%x00%C(green)%ad%C(reset) %C(magenta)%C(italic)%<(40,trunc)%S%C(reset) %C(auto)%h %C(blue)%<(15,trunc)%an %C(auto)%<(65,trunc)%s%D%C(reset)'
   recent = branch --sort=-committerdate
   prune = fetch --all --prune
 
 [color]
-	ui = true
+  ui = true
 
 [color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green bold
-	newHighlight = green bold 22
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
 
 [color "diff"]
-	meta = 11
-	frag = magenta bold
-	func = 146 bold
-	commit = yellow bold
-	old = red bold
-	new = green bold
-	whitespace = red reverse
+  meta = 11
+  frag = magenta bold
+  func = 146 bold
+  commit = yellow bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse
 
 [help]
-	autocorrect = 1
+  autocorrect = 1
 
 [gc]
-	auto = 256
+  auto = 256
 
 [github]
-	user = {{ .github_user }}
+  user = {{ .github_user }}
 
 {{- if .work_mode }}
 [filter "lfs"]
   clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
 {{- end }}

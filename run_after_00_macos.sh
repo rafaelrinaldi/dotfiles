@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-echo "🍎 Configuring macOS settings for software development..."
+echo "Configuring macOS settings for software development..."
 
 # Close any open System Preferences panes to prevent conflicts
 osascript -e 'tell application "System Preferences" to quit'
@@ -11,7 +11,7 @@ osascript -e 'tell application "System Preferences" to quit'
 # Keyboard Settings
 ###############################################################################
 
-echo "⌨️  Configuring keyboard settings..."
+echo "Configuring keyboard settings..."
 
 # Disable automatic capitalization
 defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
@@ -36,7 +36,7 @@ defaults write NSGlobalDomain InitialKeyRepeat -int 15
 # Dock Settings
 ###############################################################################
 
-echo "🔷 Configuring Dock settings..."
+echo "Configuring Dock settings..."
 
 # Move Dock to the right side
 defaults write com.apple.dock orientation -string "right"
@@ -57,7 +57,7 @@ defaults write com.apple.dock tilesize -int 48
 # Finder Settings
 ###############################################################################
 
-echo "📁 Configuring Finder settings..."
+echo "Configuring Finder settings..."
 
 # Show hidden files
 defaults write com.apple.finder AppleShowAllFiles -bool true
@@ -81,7 +81,7 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 # Trackpad Settings
 ###############################################################################
 
-echo "👆 Configuring trackpad settings..."
+echo "Configuring trackpad settings..."
 
 # Enable tap to click
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
@@ -91,7 +91,7 @@ defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 # Menu Bar Settings
 ###############################################################################
 
-echo "📊 Configuring menu bar settings..."
+echo "Configuring menu bar settings..."
 
 # Show battery percentage
 defaults write com.apple.menuextra.battery ShowPercent -string "YES"
@@ -103,7 +103,7 @@ defaults write com.apple.menuextra.clock DateFormat -string "EEE MMM d  h:mm a"
 # Security Settings
 ###############################################################################
 
-echo "🔒 Configuring security settings..."
+echo "Configuring security settings..."
 
 # Require password immediately after sleep or screen saver begins
 defaults write com.apple.screensaver askForPassword -int 1
@@ -116,7 +116,7 @@ sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
 # Development-specific Settings
 ###############################################################################
 
-echo "🛠️  Configuring development-specific settings..."
+echo "Configuring development-specific settings..."
 
 # Enable developer mode for Simulator
 sudo DevToolsSecurity -enable
@@ -131,7 +131,7 @@ defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int
 # Apply Changes
 ###############################################################################
 
-echo "🔄 Applying changes..."
+echo "Applying changes..."
 
 # Restart affected applications
 for app in "Activity Monitor" \
@@ -143,6 +143,6 @@ for app in "Activity Monitor" \
     killall "${app}" &> /dev/null || true
 done
 
-echo "✅ macOS configuration complete!"
+echo "macOS configuration complete!"
 echo ""
 echo "You may want to restart your Mac now." 

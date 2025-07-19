@@ -1,6 +1,7 @@
+# vim: ft=fish :
 set fish_greeting
 
-# These are here mostly to avoid random issues with nvm and Xcode
+# Mostly to avoid random issues with Xcode
 set -e PREFIX
 
 # Abbreviations
@@ -35,14 +36,6 @@ alias gs="git status"
 alias gundo="git reset HEAD~1"
 alias gunignore="git update-index --no-assume-unchanged"
 alias gwip="git add . && git commit -m "WIP""
-
-{{- if .work_mode }}
-# AWS & Okta shenanigans
-# alias aws-okta okta-aws-cli
-
-# Google Cloud
-# source "$(brew --prefix)/share/google-cloud-sdk/path.fish.inc"
-{{- end }}
 
 # $PATH
 fish_add_path /opt/homebrew/bin

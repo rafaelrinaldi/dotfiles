@@ -1,6 +1,7 @@
-[author]: http://rinaldi.io
-[joel]: http://joelglovier.com
-[rcm]: https://github.com/thoughtbot/rcm
+[author]: https://rinaldi.io
+[joel]: https://joelglovier.com
+[chezmoi]: https://chezmoi.io
+[bw]: https://bitwarden.com/help/cli
 
 # dotfiles
 
@@ -8,26 +9,35 @@
 
 ## Requirements
 
-You'll need [rcm][rcm]:
+You'll need [chezmoi][chezmoi] and [bw][bw] available in `$PATH`:
 
-```fish
-$ brew tap thoughtbot/formulae; brew install rcm
+```sh
+# Install Homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install `asdf` (for Node.js), `chezmoi`
+brew install asdf chezmoi
+
+# Install the latest available Node.js version via `asdf`
+asdf plugin add nodejs
+asdf install
+
+asdf install nodejs latest
+asdf set nodejs latest --home
+
+# Install `bw` via npm
+npm i -g @bitwarden/cli
 ```
 
-## Install
+## Setup
 
-```fish
-$ git clone git@github.com:rafaelrinaldi/dotfiles.git $HOME/dotfiles
-$ env RCRC=$HOME/dotfiles/rcrc rcup
-```
+With all the required software installed, you now must auth then bootstrap
 
-Keep a `~/dotfiles` folder just for convenience.
-
-## Update
-
-```fish
-$ cd $HOME/dotfiles; git pull
-$ rcup -d $HOME/dotfiles
+```sh
+bw login
+export BW_SESSION=$(bw unlock --raw)
+chezmoi init rafaelrinaldi/dotfiles
+chezmoi apply
 ```
 
 ## License
