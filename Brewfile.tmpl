@@ -32,10 +32,10 @@ cask "raycast"
 cask "tower"
 cask "xscope"
 
-{{ if .work_mode }}
+{{- if .work_mode }}
 # Hover
 brew "git-lfs"
 
 cask "android-file-transfer"
 cask "android-studio"
-{{ end }}
+{{- end }}
