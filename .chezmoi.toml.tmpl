@@ -17,6 +17,3 @@
   npm_token = {{ (bitwardenFields "item" "chezmoi").npm_token_work.value | quote }}
   segment_typewriter_token = {{ (bitwardenFields "item" "chezmoi").segment_typewriter_token.value | quote }}
 {{- end }}
-
-[template]
-  options = ["missingkey=error"]
