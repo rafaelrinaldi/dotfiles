@@ -1,0 +1,39 @@
+#!/bin/bash
+# vim: ft=sh :
+
+echo "Setting up SSH..."
+
+{{ $cert_prefix := ternary "ssh_cert" "ssh_cert_work" (contains "winchester" .chezmoi.hostname) -}}
+CERT_FILENAME="{{ $cert_prefix }}"
+CERT_FILENAME_PUB="${CERT_FILENAME}.pub"
+
+ITEM_ID=$(bw get item chezmoi | jq -r ".id")
+CERT_BASENAME="id_ed25519"
+SSH_DIR="${HOME}/.ssh"
+
+echo "Downloading encrypted cert files..."
+
+mkdir -p "${SSH_DIR}"
+
+# Download private key
+bw get attachment "${CERT_FILENAME}" --itemid "${ITEM_ID}" --output "${SSH_DIR}/${CERT_BASENAME}" || true
+
+if [ $? -ne 0 ]; then
+    echo "ERROR: Failed to download private key '${CERT_FILENAME}'. Exiting." >&2
+    exit 1
+fi
+
+# Download public key
+bw get attachment "${CERT_FILENAME_PUB}" --itemid "${ITEM_ID}" --output "${SSH_DIR}/${CERT_BASENAME}.pub" || true
+
+if [ $? -ne 0 ]; then
+    echo "ERROR: Failed to download public key '${CERT_FILENAME_PUB}'. Exiting." >&2
+    exit 1
+fi
+
+echo "Cert files successfully downloaded."
+
+# Set correct permissions for the private key
+chmod 600 "${SSH_DIR}/${CERT_BASENAME}"
+
+echo "SSH setup done."

@@ -86,7 +86,7 @@
 [github]
   user = {{ .github_user }}
 
-{{- if .work_mode }}
+{{ if not (contains "winchester" .chezmoi.hostname) -}}
 [filter "lfs"]
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f

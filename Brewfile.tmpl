@@ -31,7 +31,7 @@ cask "raycast"
 cask "tower"
 cask "xscope"
 
-{{- if .work_mode }}
+{{- if contains "winchester" .chezmoi.hostname -}}
 # Hover
 brew "git-lfs"
 
