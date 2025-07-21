@@ -3,7 +3,10 @@
   email = {{ .email }}
 
 [credential]
-  helper = cache --timeout=3600
+  helper = osxkeychain
+
+[credential "https://dev.azure.com"]
+  useHttpPath = true
 
 [url "https://github.com/"]
   insteadOf = ssh://git@github.com
