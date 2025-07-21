@@ -4,28 +4,6 @@ set -euo pipefail
 
 echo "Starting startup script..."
 
-# Install Xcode
-
-echo "Checking for Xcode Command Line Tools..."
-
-if xcode-select -p &>/dev/null; then
-  echo "Xcode Command Line Tools are already installed."
-else
-  echo "Xcode Command Line Tools not found. Installing..."
-
-  xcode-select --install
-
-  echo "Click 'Install' in the pop-up window and agree to the terms."
-  echo "Waiting for Xcode Command Line Tools installation to complete..."
-
-  # Loop until xcode-select --install finishes
-  while ! xcode-select -p &>/dev/null; do
-    sleep 5
-  done
-
-  echo "Xcode Command Line Tools installation complete."
-fi
-
 # Install Homebrew
 
 echo "Checking for Homebrew..."
