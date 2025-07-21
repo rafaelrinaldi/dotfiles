@@ -1,0 +1,7 @@
+registry=https://registry.npmjs.org/
+always-auth=true
+unsafe-perm=true
+{{- if .work_mode }}
+@hover:registry=https://registry.npmjs.org/
+//registry.npmjs.org/:_authToken={{ .npm_token }}
+{{- end }}
