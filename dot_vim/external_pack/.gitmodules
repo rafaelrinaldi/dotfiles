@@ -1,0 +1,31 @@
+[submodule "plugins/start/vim-surround"]
+  path = plugins/start/vim-surround
+  url = https://github.com/tpope/vim-surround
+
+[submodule "plugins/start/vim-repeat"]
+  path = plugins/start/vim-repeat
+  url = https://github.com/tpope/vim-repeat
+
+[submodule "plugins/start/vim-commentary"]
+  path = plugins/start/vim-commentary
+  url = https://github.com/tpope/vim-commentary
+
+[submodule "plugins/start/vim-sensible"]
+  path = plugins/start/vim-sensible
+  url = https://github.com/tpope/vim-sensible
+
+[submodule "plugins/start/vim-vinegar"]
+  path = plugins/start/vim-vinegar
+  url = https://github.com/tpope/vim-vinegar
+
+[submodule "plugins/start/vim-jsx-typescript"]
+  path = plugins/start/vim-jsx-typescript
+  url = https://github.com/peitalin/vim-jsx-typescript
+
+[submodule "plugins/start/vim-sneak"]
+  path = plugins/start/vim-sneak
+  url = https://github.com/justinmk/vim-sneak
+
+[submodule "plugins/start/vim-unimpaired"]
+  path = plugins/start/vim-unimpaired
+  url = https://github.com/tpope/vim-unimpaired
