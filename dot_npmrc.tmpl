@@ -1,5 +1,0 @@
-{{ if not (contains "winchester" .chezmoi.hostname) -}}
-@hoverinc:registry=https://npm.pkg.github.com/
-//npm.pkg.github.com/:_authToken={{ .npm_token }}
-always-auth=true
-{{- end }}
