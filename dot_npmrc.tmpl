@@ -1,7 +1,5 @@
-registry=https://registry.npmjs.org/
-always-auth=true
-unsafe-perm=true
 {{ if not (contains "winchester" .chezmoi.hostname) -}}
-@hover:registry=https://registry.npmjs.org/
-//registry.npmjs.org/:_authToken={{ .npm_token }}
+@hoverinc:registry=https://npm.pkg.github.com/
+//npm.pkg.github.com/:_authToken={{ .npm_token }}
+always-auth=true
 {{- end }}

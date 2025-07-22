@@ -125,6 +125,10 @@ filetype plugin indent on
 " Enable syntax highlighting
 syntax on
 
+" Syntax highlighting via modelines
+set modeline
+set modelines=5
+
 " Omni completion menu options: remove 'preview' window for omni-completion
 set cot-=preview
 
