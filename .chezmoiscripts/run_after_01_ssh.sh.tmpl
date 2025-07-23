@@ -42,4 +42,10 @@ echo "Cert files successfully downloaded."
 # Set correct permissions for the private key
 chmod 600 "${SSH_DIR}/${CERT_BASENAME}"
 
+echo "Adding SSH keys to the list of known hosts..."
+
+eval "$(ssh-agent -s)"
+
+ssh-add "${SSH_DIR}/${CERT_BASENAME}"
+
 echo "SSH setup done."
