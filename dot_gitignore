@@ -1,2 +1,3 @@
-lazy.json
+.env.local
 .lvimrc
+lazy.json

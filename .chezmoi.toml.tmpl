@@ -8,8 +8,11 @@
   npm_token = {{ $cm.npm_token.value | quote }}
 {{- else }}
   email = {{ $cm.email_work.value | quote }}
+  email_personal = {{ $cm.email.value | quote }}
   github_token = {{ $cm.github_token_work.value | quote }}
   github_user = {{ $cm.github_user_work.value | quote }}
+  github_token_personal = {{ $cm.github_token.value | quote }}
+  github_user_personal = {{ $cm.github_user.value | quote }}
   match_password = {{ $cm.match_password.value | quote }}
   npm_token = {{ $cm.npm_token_work.value | quote }}
   segment_typewriter_token = {{ $cm.segment_typewriter_token.value | quote }}
