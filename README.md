@@ -18,7 +18,7 @@ Personal dotfiles managed with [chezmoi].
 Run the bootstrap script on a fresh machine:
 
 ```bash
-curl -fsLS https://raw.githubusercontent.com/rafaelrinaldi/dotfiles/main/install.sh | bash
+curl -fsLS https://rinaldi.io/dotfiles | bash
 ```
 
 This will:
