@@ -1,8 +1,8 @@
 # vim: set ft=toml :
 [data]
 {{- $profile := env "CHEZMOI_MACHINE_PROFILE" }}
-{{- if not (or (eq $profile "personal") (eq $profile "work")) }}
-{{- fail "CHEZMOI_MACHINE_PROFILE must be set to 'personal' or 'work'. Example: export CHEZMOI_MACHINE_PROFILE=work" }}
+{{- if not $profile }}
+{{-   $profile = promptChoiceOnce . "machine_profile" "Machine profile" (list "personal" "work") }}
 {{- end }}
 {{- $isPersonal := eq $profile "personal" }}
   machine_profile = {{ $profile | quote }}

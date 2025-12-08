@@ -14,24 +14,24 @@
 ## Fresh Installation
 
 ```bash
-# Set machine profile (work or personal)
-export CHEZMOI_MACHINE_PROFILE=work
-
-# Install chezmoi and apply dotfiles
 sh -c "$(curl -fsLS get.chezmoi.io/lb)" -- init --apply rafaelrinaldi/dotfiles
 ```
 
 This will prompt for:
 
+- Machine profile (personal or work)
 - Bitwarden vault unlock (enter your master password)
 - SSH key passphrase (if applicable)
+
+You can also set the profile via environment variable to skip the prompt:
+
+```bash
+export CHEZMOI_MACHINE_PROFILE=work
+```
 
 ## Syncing with Latest
 
 ```bash
-# Set machine profile (if not already set)
-export CHEZMOI_MACHINE_PROFILE=work
-
 # Unlock Bitwarden
 export BW_SESSION=$(bw unlock --raw)
 
