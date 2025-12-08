@@ -33,14 +33,6 @@ This will:
 
 After completion, restart your terminal to switch to Fish shell.
 
-### Environment Variable (Optional)
-
-Skip the profile prompt by setting:
-
-```bash
-export CHEZMOI_MACHINE_PROFILE=personal  # or "work"
-```
-
 ## Syncing with Latest
 
 Pull the latest changes from the remote and apply them:
@@ -65,10 +57,10 @@ chezmoi apply
 
 This setup **automatically** uses the correct GitHub account based on repo ownership:
 
-| Repo Owner | Account Used |
-|------------|--------------|
-| `rafaelrinaldi/*` | Personal |
-| Everything else | Work |
+| Repo Owner        | Account Used |
+| ----------------- | ------------ |
+| `rafaelrinaldi/*` | Personal     |
+| Everything else   | Work         |
 
 No manual switching required. Push/pull just works.
 
@@ -86,20 +78,21 @@ Additionally, directory-based gitconfig sets the correct email:
 
 The setup expects a Bitwarden item named `chezmoi` with these custom fields:
 
-| Field | Description |
-|-------|-------------|
-| `email` | Personal email |
-| `github_token` | Personal GitHub PAT |
-| `github_user` | Personal GitHub username |
-| `npm_token` | Personal npm token |
-| `email_work` | Work email |
-| `github_token_work` | Work GitHub PAT |
-| `github_user_work` | Work GitHub username |
-| `npm_token_work` | Work npm token |
-| `match_password` | (Work only) Fastlane match password |
-| `segment_typewriter_token` | (Work only) Segment token |
+| Field                      | Description                         |
+| -------------------------- | ----------------------------------- |
+| `email`                    | Personal email                      |
+| `github_token`             | Personal GitHub PAT                 |
+| `github_user`              | Personal GitHub username            |
+| `npm_token`                | Personal npm token                  |
+| `email_work`               | Work email                          |
+| `github_token_work`        | Work GitHub PAT                     |
+| `github_user_work`         | Work GitHub username                |
+| `npm_token_work`           | Work npm token                      |
+| `match_password`           | (Work only) Fastlane match password |
+| `segment_typewriter_token` | (Work only) Segment token           |
 
 SSH keys are stored as attachments on the same item:
+
 - `ssh_cert` / `ssh_cert.pub` (personal)
 - `ssh_cert_work` / `ssh_cert_work.pub` (work)
 
