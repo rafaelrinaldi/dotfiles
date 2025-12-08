@@ -17,7 +17,8 @@
   path = ~/.gitconfig.personal
 
 [credential "https://github.com"]
-  helper = !gh auth git-credential
+  helper = !~/.config/git/git-credential-resolver
+  useHttpPath = true
 
 [url "https://github.com/"]
   insteadOf = ssh://git@github.com/
