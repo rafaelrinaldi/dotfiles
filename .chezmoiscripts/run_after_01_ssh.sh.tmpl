@@ -1,0 +1,85 @@
+#!/bin/bash
+# vim: ft=sh :
+
+# Source asdf if available (needed for bw command)
+if [[ -f "$HOME/.asdf/asdf.sh" ]]; then
+  source "$HOME/.asdf/asdf.sh"
+elif [[ -f "/opt/homebrew/opt/asdf/libexec/asdf.sh" ]]; then
+  source "/opt/homebrew/opt/asdf/libexec/asdf.sh"
+fi
+
+echo "Setting up SSH..."
+
+# Check if bw is available
+if ! command -v bw &>/dev/null; then
+  echo "Warning: 'bw' (Bitwarden CLI) is not available. Skipping SSH setup."
+  echo "You can set up SSH keys manually later or ensure 'bw' is in your PATH."
+  exit 0
+fi
+
+# Check if Bitwarden vault is unlocked and user is logged in
+BW_STATUS_JSON=$(bw status 2>/dev/null || echo '{"status":"unknown"}')
+BW_STATUS=$(echo "$BW_STATUS_JSON" | jq -r '.status' 2>/dev/null || echo "unknown")
+BW_LOGGED_IN=$(echo "$BW_STATUS_JSON" | jq -r '.userId' 2>/dev/null || echo "")
+
+if [[ -z "$BW_LOGGED_IN" || "$BW_LOGGED_IN" == "null" || "$BW_STATUS" != "unlocked" ]]; then
+  echo "Warning: Bitwarden vault is not unlocked or user not logged in (status: ${BW_STATUS:-unknown}). Skipping SSH setup."
+  echo "Please login and unlock your Bitwarden vault: 'bw login' and 'bw unlock'"
+  exit 0
+fi
+
+{{ $cert_prefix := ternary "ssh_cert" "ssh_cert_work" .isPersonal -}}
+CERT_FILENAME="{{ $cert_prefix }}"
+CERT_FILENAME_PUB="${CERT_FILENAME}.pub"
+
+# Get item ID from Bitwarden - try by name first, then by search
+ITEM_ID=""
+# Try direct get first
+ITEM_OUTPUT=$(bw get item chezmoi 2>&1)
+if echo "$ITEM_OUTPUT" | jq -e '.id' >/dev/null 2>&1; then
+  ITEM_ID=$(echo "$ITEM_OUTPUT" | jq -r '.id')
+else
+  # If direct get fails, try searching
+  SEARCH_RESULT=$(bw list items --search chezmoi 2>/dev/null | jq -r '.[0].id' 2>/dev/null || echo "")
+  if [[ -n "$SEARCH_RESULT" && "$SEARCH_RESULT" != "null" ]]; then
+    ITEM_ID="$SEARCH_RESULT"
+  fi
+fi
+
+if [[ -z "$ITEM_ID" || "$ITEM_ID" == "null" ]]; then
+  echo "Warning: Could not find Bitwarden item 'chezmoi'. Skipping SSH setup."
+  echo "Make sure the item exists and you have access to it."
+  exit 0
+fi
+
+CERT_BASENAME="id_ed25519"
+SSH_DIR="${HOME}/.ssh"
+
+# Check if both the private and public key files already exist
+if [ -f "${SSH_DIR}/${CERT_BASENAME}" ] && [ -f "${SSH_DIR}/${CERT_BASENAME}.pub" ]; then
+    echo "SSH key pair '${CERT_BASENAME}' already exists in '${SSH_DIR}'. Skipping setup."
+    exit 0
+fi
+
+echo "Downloading encrypted cert files..."
+
+mkdir -p "${SSH_DIR}"
+
+# Download private key (non-blocking)
+if ! bw get attachment "${CERT_FILENAME}" --itemid "${ITEM_ID}" --output "${SSH_DIR}/${CERT_BASENAME}" 2>/dev/null; then
+    echo "Warning: Failed to download private key '${CERT_FILENAME}'. Skipping SSH setup." >&2
+    exit 0
+fi
+
+# Download public key (non-blocking)
+if ! bw get attachment "${CERT_FILENAME_PUB}" --itemid "${ITEM_ID}" --output "${SSH_DIR}/${CERT_BASENAME}.pub" 2>/dev/null; then
+    echo "Warning: Failed to download public key '${CERT_FILENAME_PUB}'. Skipping SSH setup." >&2
+    exit 0
+fi
+
+echo "Cert files successfully downloaded."
+
+# Set correct permissions for the private key
+chmod 600 "${SSH_DIR}/${CERT_BASENAME}"
+
+echo "SSH setup done."

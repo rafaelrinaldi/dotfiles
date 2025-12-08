@@ -1,0 +1,18 @@
+# GitHub - will use HTTPS via git config insteadOf rules
+Host github.com
+  HostName github.com
+  User git
+  IdentitiesOnly yes
+
+# Tangled - use SSH
+Host tangled.sh
+  HostName tangled.sh
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+
+# Default for all other hosts - use SSH
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentitiesOnly yes

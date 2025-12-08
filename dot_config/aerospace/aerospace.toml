@@ -1,0 +1,168 @@
+start-at-login = true
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+after-startup-command = ['layout tiles']                               # Default to tiles layout on startup
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# Get rid of macOS' default cmd+h shortcut for hiding apps
+automatically-unhide-macos-hidden-apps = false
+
+# Picture in Picture always stays on top
+exec-on-workspace-change = [
+  '/bin/bash',
+  '-c',
+  '~/.config/aerospace/pip-move.sh',
+]
+
+[gaps]
+inner.horizontal = 10
+inner.vertical = 10
+outer.left = 10
+outer.bottom = 10
+outer.top = 10
+outer.right = 10
+
+[key-mapping]
+preset = 'qwerty'
+
+# Main mode (mod-[1-9])
+# -----------------------------------------------------------------------------
+
+[mode.main.binding]
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+
+# Move window to workspace (mod-shift-[1-9])
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+alt-shift-4 = 'move-node-to-workspace 4'
+alt-shift-5 = 'move-node-to-workspace 5'
+alt-shift-6 = 'move-node-to-workspace 6'
+alt-shift-7 = 'move-node-to-workspace 7'
+alt-shift-8 = 'move-node-to-workspace 8'
+alt-shift-9 = 'move-node-to-workspace 9'
+
+# Vim bindings for focus control
+# alt-h = 'focus left'
+# alt-j = 'focus down'
+# alt-k = 'focus up'
+# alt-l = 'focus right'
+# alt-w = 'focus dfs-next'
+
+# Vim bindings for moving windows
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# Window management
+alt-shift-c = 'close'
+alt-shift-f = 'layout floating tiling'               # Toggle floating for the focused window
+alt-shift-space = 'layout tiles horizontal vertical' # Cycle between horizontal and vertical tile layouts
+
+alt-r = 'mode resize'
+alt-semicolon = 'mode service'
+
+# Resize mode (alt-r)
+# -----------------------------------------------------------------------------
+
+[mode.resize.binding]
+# Use h/j/k/l to resize
+h = 'resize smart -50'
+l = 'resize smart +50'
+k = 'resize smart +50' # In horizontal containers, k and l do the same
+j = 'resize smart -50' # In vertical containers, h and j do the same
+
+# Exit resize mode and return to main
+esc = 'mode main'
+enter = 'mode main'
+
+# Service mode (alt-;)
+# -----------------------------------------------------------------------------
+
+[mode.service.binding]
+# 'r' to reload config
+r = ['reload-config', 'mode main']
+# 'l' to reset (flatten) the layout for the current workspace
+l = ['flatten-workspace-tree', 'mode main']
+# 'q' to quit AeroSpace (terminates the process)
+q = ['exec-and-forget pkill AeroSpace', 'mode main']
+# 'x' to close all windows on the workspace except the focused one
+x = ['close-all-windows-but-current', 'mode main']
+
+# Exit service mode and return to main
+esc = 'mode main'
+enter = 'mode main'
+
+# Default workspaces
+# -----------------------------------------------------------------------------
+
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = 'move-node-to-workspace 2'
+
+# Cursor
+[[on-window-detected]]
+if.app-id = 'com.todesktop.230313mzl4w4u92'
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+if.app-id = 'com.figma.Desktop'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.dt.Xcode'
+run = 'move-node-to-workspace 5'
+
+[[on-window-detected]]
+if.app-id = 'us.zoom.xos'
+run = 'move-node-to-workspace 8'
+
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefox'
+run = 'move-node-to-workspace 9'
+
+# Floating windows
+# -----------------------------------------------------------------------------
+
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.iphonesimulator'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.1password.1password'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.bitwarden.desktop'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'org.standardnotes.standardnotes'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'app.tuple.app '
+run = 'layout floating'

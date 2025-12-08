@@ -1,0 +1,64 @@
+# font-family = Iosevka Medium
+# font-feature = ss08
+# font-feature = dlig
+
+# font-size = 14
+# font-family = JetBrains Mono
+# font-variation = wght=500
+# font-feature = calt
+# font-feature = clig
+# font-feature = liga
+# font-feature = ss20
+# font-feature = cv02
+# font-feature = cv03
+# font-feature = cv04
+# font-feature = cv05
+# font-feature = cv06
+# font-feature = cv07
+# font-feature = cv11
+# font-feature = cv14
+# font-feature = cv15
+# font-feature = cv16
+# font-feature = cv17
+# font-thicken = true
+
+# Font stuff
+font-size = 15
+font-family = TX-02-Variable
+font-variation = wdth=90
+font-variation = wght=500
+font-variation-italic = wght=500
+font-thicken = false
+adjust-cell-height = 25%
+
+# Misc
+window-padding-x = 34
+window-padding-y = 28
+theme = light:Zenbones Light,dark:Zenbones Dark
+shell-integration-features = no-cursor
+cursor-style = block
+cursor-style-blink = false
+macos-titlebar-style = tabs
+macos-auto-secure-input = true
+mouse-hide-while-typing = true
+cursor-invert-fg-bg = true
+
+# Clipboard
+clipboard-read = allow
+clipboard-write = allow
+copy-on-select = clipboard
+clipboard-trim-trailing-spaces = true
+
+# Icon
+macos-icon = custom-style
+macos-icon-frame = plastic
+macos-icon-ghost-color = #FFFFFF
+macos-icon-screen-color = #000000
+
+# Quick Terminal
+quick-terminal-size = 45%
+
+# Acento ortográfico
+# macos-option-as-alt = false
+
+keybind = global:cmd+delete=toggle_quick_terminal

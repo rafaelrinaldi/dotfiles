@@ -1,0 +1,112 @@
+# Default user configuration (fallback for directories outside ~/work/ and ~/dev/)
+{{- if not (hasKey . "email") }}
+{{- fail "Config not initialized. Please set CHEZMOI_MACHINE_PROFILE=work (or personal) and run 'chezmoi init' first" }}
+{{- end }}
+[user]
+  name = Rafael Rinaldi
+  email = {{ .email }}
+
+{{- if (hasKey . "github_user") }}
+[github]
+  user = {{ .github_user }}
+{{- end }}
+
+# Directory-based config overrides
+[includeIf "gitdir:~/work/"]
+  path = ~/.gitconfig.work
+
+[includeIf "gitdir:~/dev/"]
+  path = ~/.gitconfig.personal
+
+[includeIf "gitdir:~/.local/share/chezmoi/"]
+  path = ~/.gitconfig.personal
+
+[credential "https://github.com"]
+  helper = !gh auth git-credential
+
+[url "https://github.com/"]
+  insteadOf = ssh://git@github.com/
+  insteadOf = git@github.com:
+
+[push]
+  default = current
+  useForceIfIncludes = true
+  followTags = true
+
+[pull]
+  rebase = true
+
+[core]
+  excludesfile = $HOME/.gitignore
+  pager = diff-so-fancy | less --tabs=4 -RF
+  autocrlf = input
+
+[interactive]
+  diffFilter = diff-so-fancy --patch
+
+[pager]
+  difftool = true
+
+[diff]
+  colorMoved = default
+
+[merge]
+  tool = Kaleidoscope
+  conflictstyle = diff3
+  prompt = false
+
+[mergetool "Kaleidoscope"]
+  cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+  trustExitCode = true
+
+[mergetool]
+  prompt = false
+
+[alias]
+  st = status -sb
+  co = checkout
+  br = branch
+  ci = commit
+  master = checkout master
+  main = checkout main
+  hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+  l1 = log --oneline --decorate --graph
+  pick-commits = "!f() { git l1 \"${1:-.}\" | fzf --ansi | cut -d' ' -f2; }; f"
+  pick-branch = "!f() { git bvb \"$@\" | fzf0 --no-multi --tiebreak=begin --ansi; }; f"
+  recent = branch --sort=-committerdate
+  prune = fetch --all --prune
+
+[color]
+  ui = true
+
+[color "diff-highlight"]
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
+
+[color "diff"]
+  meta = 11
+  frag = magenta bold
+  func = 146 bold
+  commit = yellow bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse
+
+[help]
+  autocorrect = 1
+
+[gc]
+  auto = 256
+
+{{- if not (hasKey . "isPersonal") }}
+{{- fail "Config not initialized. Please set CHEZMOI_MACHINE_PROFILE=work (or personal) and run 'chezmoi init' first" }}
+{{- end }}
+{{- if not .isPersonal }}
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+{{- end -}}

@@ -1,0 +1,38 @@
+# vim: set ft=toml :
+[data]
+{{- $profile := env "CHEZMOI_MACHINE_PROFILE" }}
+{{- if not (or (eq $profile "personal") (eq $profile "work")) }}
+{{- fail "CHEZMOI_MACHINE_PROFILE must be set to 'personal' or 'work'. Example: export CHEZMOI_MACHINE_PROFILE=work" }}
+{{- end }}
+{{- $isPersonal := eq $profile "personal" }}
+  machine_profile = {{ $profile | quote }}
+  isPersonal = {{ $isPersonal }}
+
+{{- $cm := (bitwardenFields "item" "chezmoi") }}
+# Personal values (always available for directory-based config)
+  email_personal = {{ $cm.email.value | quote }}
+  github_token_personal = {{ $cm.github_token.value | quote }}
+  github_user_personal = {{ $cm.github_user.value | quote }}
+  npm_token_personal = {{ $cm.npm_token.value | quote }}
+# Work values (always available for directory-based config)
+  email_work = {{ $cm.email_work.value | quote }}
+  github_token_work = {{ $cm.github_token_work.value | quote }}
+  github_user_work = {{ $cm.github_user_work.value | quote }}
+  npm_token_work = {{ $cm.npm_token_work.value | quote }}
+{{- if not $isPersonal }}
+  match_password = {{ $cm.match_password.value | quote }}
+  segment_typewriter_token = {{ $cm.segment_typewriter_token.value | quote }}
+{{- end }}
+# Default values (based on machine profile)
+{{- if $isPersonal }}
+  email = {{ $cm.email.value | quote }}
+  github_token = {{ $cm.github_token.value | quote }}
+  github_user = {{ $cm.github_user.value | quote }}
+  npm_token = {{ $cm.npm_token.value | quote }}
+{{- else }}
+  email = {{ $cm.email_work.value | quote }}
+  github_token = {{ $cm.github_token_work.value | quote }}
+  github_user = {{ $cm.github_user_work.value | quote }}
+  npm_token = {{ $cm.npm_token_work.value | quote }}
+{{- end }}
+

@@ -1,0 +1,11 @@
+# Personal-specific Git config (applied when in ~/dev/)
+{{- if not (hasKey . "email_personal") }}
+{{- fail "Config not initialized. Please set CHEZMOI_MACHINE_PROFILE and run 'chezmoi init' first" }}
+{{- end }}
+[user]
+  name = Rafael Rinaldi
+  email = {{ .email_personal }}
+
+[github]
+  user = {{ .github_user_personal }}
+

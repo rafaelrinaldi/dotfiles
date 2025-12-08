@@ -1,0 +1,202 @@
+set nocompatible
+set encoding=utf-8
+set fileencoding=utf-8
+set termencoding=utf-8
+
+let mapleader=","
+
+" Enable mouse support in all modes
+set mouse=a
+
+" Indentation & Tabs
+" =============================================================================
+
+" Set tab width and indentation to 2 spaces, and use spaces instead of tabs
+set tabstop=2           " Number of screen columns occupied by a <Tab>
+set shiftwidth=2        " Number of spaces to use for each step of (auto)indent
+set expandtab           " Use spaces instead of tabs for autoindent and 'in'
+
+" Backspace behaves as expected
+set backspace=indent,eol,start
+
+" Display & User Interface
+" =============================================================================
+
+" Highlight the 80th column (useful for enforcing line limits)
+set colorcolumn=80
+
+" Highlight all matches when searching
+set hls
+
+" Always show the status line (0: never, 1: always if more than one window, 2: always)
+set laststatus=2
+
+set splitbelow
+set splitright
+
+" Do not create swap files
+set noswapfile
+
+" Show invisible characters
+set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:·
+set list
+
+" Set the window title to the current file name
+set title
+
+" Show line numbers and relative line numbers
+set number
+set relativenumber
+
+" Show current position in the status line (line, column, percentage)
+set ruler
+
+" Highlight matching parenthesis/brackets
+set showmatch
+
+" Improve redrawing speed
+set ttyfast
+set lazyredraw
+
+" Automatically save file when switching buffers
+set autowrite
+" Automatically reload file if it has been changed outside of Vim
+set autoread
+
+" Always report number of lines changed by a command
+set report=0
+
+" Set maximum text width for automatic wrapping
+set textwidth=80
+
+" Add 't' to formatoptions for auto-wrapping text
+set formatoptions+=t
+
+" Ignore case in search patterns
+set ignorecase
+
+" Use smart case search: ignore case if pattern is all lowercase, match case if uppercase letters are present
+set smartcase
+
+" For file completion
+set fileignorecase
+
+" Enable code folding
+set foldenable
+set foldnestmax=10
+set foldlevelstart=10
+set foldmethod=indent
+
+" Highlight cursor line
+set cursorline
+
+" Performance & Rendering
+" =============================================================================
+
+" Use new regular expression engine for syntax highlighting
+set regexpengine=0
+
+" Set `termguicolors` if the terminal supports true colors (24-bit RGB)
+if has('termguicolors')
+  set termguicolors
+endif
+
+" Colors & Appearance
+" =============================================================================
+
+colorscheme habamax
+
+" Adjust color scheme based on macOS system appearance
+if has('mac')
+  let appearance = system('defaults read -g AppleInterfaceStyle')
+
+  if appearance =~ 'Dark'
+    set background=dark
+    colorscheme habamax
+  else
+    set background=light
+    colorscheme shine
+  endif
+endif
+
+augroup CustomHighlights
+  autocmd!
+  autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
+  autocmd ColorScheme * highlight NonText ctermbg=NONE guibg=NONE
+  autocmd ColorScheme * highlight Comment cterm=italic gui=italic
+  autocmd ColorScheme * highlight CursorLineNr cterm=bold gui=bold
+augroup END
+
+" Plugins & Completion
+" =============================================================================
+
+" Enable file type detection, plugin loading, and intelligent indenting
+filetype plugin indent on
+
+" Enable syntax highlighting
+syntax on
+
+" Syntax highlighting via modelines
+set modeline
+set modelines=5
+
+" Omni completion menu options: remove 'preview' window for omni-completion
+set cot-=preview
+
+" Copy and paste should just work with system clipboard
+set clipboard^=unnamed,unnamedplus
+
+" File auto completion
+set wildmode=longest:full,full
+
+" Use ripgrep instead of grep if 'rg' executable is found
+if executable('rg')
+  set grepprg=rg\ --vimgrep
+endif
+
+" Keyboard Mappings
+" =============================================================================
+
+" Toggle fold under cursor with <Tab> key in normal mode
+nnoremap <Tab> za
+
+" Kill search highlighting when pressing Escape in normal mode
+nnoremap <silent> <Esc> <Esc>:noh<CR>
+
+" Autocommands
+" =============================================================================
+
+" Limits the body of Git commit messages to 72 characters
+autocmd FileType gitcommit set textwidth=72
+
+" Enable spell checking and add 'kspell' to complete options for specific file types
+autocmd FileType {markdown,gitcommit} set spell complete+=kspell
+
+" Set syntax highlighting for specific file types (e.g., .eslintrc, .babelrc as JSON)
+autocmd BufRead,BufNewFile *.{eslint,babel}rc set filetype=json
+
+" Some file types (like Makefiles and Git config) use hard tabs, disable expandtab
+autocmd FileType {make,gitconfig} set noexpandtab
+
+" Make `gf` (goto file) work properly for JavaScript/React files by adding common extensions
+autocmd FileType {javascript.jsx,javascriptreact} set suffixesadd+='.js,.jsx'
+
+" Make `gf` (goto file) work properly for TypeScript/React files by adding common extensions
+autocmd FileType {typescriptreact} set suffixesadd+='.ts,.tsx'
+
+" Automatically save files when Vim loses focus or buffer is left
+autocmd FocusLost,BufLeave * silent! w
+
+" Plugins
+" =============================================================================
+
+" sneak.vim configuration: show labels for jump targets
+let g:sneak#label = 1
+
+" Load all plugins found in 'packpath' (usually done after plugin manager setup)
+packloadall
+
+" Load configuration from a project-specific '.lvimrc' file if present in current working directory
+if filereadable($PWD .'/.lvimrc')
+  source ./.lvimrc
+endif

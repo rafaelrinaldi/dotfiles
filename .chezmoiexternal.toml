@@ -1,0 +1,39 @@
+[".vim/pack/plugins/start/vim-surround"]
+  type = "git-repo"
+  url = "https://github.com/tpope/vim-surround.git"
+  refreshPeriod = "168h"
+
+[".vim/pack/plugins/start/vim-repeat"]
+  type = "git-repo"
+  url = "https://github.com/tpope/vim-repeat.git"
+  refreshPeriod = "168h"
+
+[".vim/pack/plugins/start/vim-commentary"]
+  type = "git-repo"
+  url = "https://github.com/tpope/vim-commentary.git"
+  refreshPeriod = "168h"
+
+[".vim/pack/plugins/start/vim-sensible"]
+  type = "git-repo"
+  url = "https://github.com/tpope/vim-sensible.git"
+  refreshPeriod = "168h"
+
+[".vim/pack/plugins/start/vim-vinegar"]
+  type = "git-repo"
+  url = "https://github.com/tpope/vim-vinegar.git"
+  refreshPeriod = "168h"
+
+[".vim/pack/plugins/start/vim-jsx-typescript"]
+  type = "git-repo"
+  url = "https://github.com/peitalin/vim-jsx-typescript.git"
+  refreshPeriod = "168h"
+
+[".vim/pack/plugins/start/vim-sneak"]
+  type = "git-repo"
+  url = "https://github.com/justinmk/vim-sneak.git"
+  refreshPeriod = "168h"
+
+[".vim/pack/plugins/start/vim-unimpaired"]
+  type = "git-repo"
+  url = "https://github.com/tpope/vim-unimpaired.git"
+  refreshPeriod = "168h"

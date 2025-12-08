@@ -1,0 +1,7 @@
+nodejs 24.4.1
+{{- if not (hasKey . "isPersonal") }}
+{{- fail "Config not initialized. Please set CHEZMOI_MACHINE_PROFILE=work (or personal) and run 'chezmoi init' first" }}
+{{- end }}
+{{- if not .isPersonal }}
+java temurin-17.0.17+10
+{{- end }}

@@ -1,0 +1,10 @@
+gui:
+  scrollPastBottom: false
+  showBranchCommitHash: true
+  showDivergenceFromBaseBranch: "arrowAndNumber"
+  useHunkModeInStagingView: true
+  border: "single"
+  showNumstatInFilesView: true
+git:
+  pagers:
+    - pager: "diff-so-fancy"

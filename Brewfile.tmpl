@@ -1,0 +1,55 @@
+brew "bat"
+brew "diff-so-fancy"
+brew "eza"
+brew "fd"
+brew "fish"
+brew "fzf"
+brew "gh"
+brew "git"
+brew "gum"
+brew "lazygit"
+brew "neovim"
+brew "reattach-to-user-namespace"
+brew "ripgrep"
+brew "starship"
+brew "tmux"
+brew "zoxide"
+
+cask "bartender"
+cask "bitwarden"
+cask "cleanshot"
+cask "cursor"
+cask "fantastical"
+cask "figma"
+cask "firefox"
+cask "ghostty"
+cask "kaleidoscope"
+cask "logi-options+"
+cask "raycast"
+cask "tower"
+cask "xscope"
+
+{{- if not (hasKey . "isPersonal") }}
+{{- fail "Config not initialized. Please set CHEZMOI_MACHINE_PROFILE=work (or personal) and run 'chezmoi init' first" }}
+{{- end }}
+{{- if .isPersonal -}}
+cask "ente"
+{{- end -}}
+
+{{- if not .isPersonal -}}
+# Hover
+brew "git-lfs"
+
+# Ruby
+# https://github.com/rbenv/ruby-build/wiki#macos
+brew "openssl@3"
+brew "readline"
+brew "libyaml"
+brew "gmp"
+brew "autoconf"
+brew "rust"
+
+cask "android-file-transfer"
+cask "android-studio"
+cask "tuple"
+{{- end -}}
