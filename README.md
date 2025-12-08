@@ -6,61 +6,102 @@
 
 [<img src="dotfiles.png" width="70">][joel]
 
+Personal dotfiles managed with [chezmoi].
+
 ## Prerequisites
 
-- Homebrew
-- Bitwarden account (for secrets)
+- macOS
+- Bitwarden account with a `chezmoi` item containing secrets (see [Secrets](#secrets))
 
 ## Fresh Installation
 
+Run the bootstrap script on a fresh machine:
+
 ```bash
-sh -c "$(curl -fsLS get.chezmoi.io/lb)" -- init --apply rafaelrinaldi/dotfiles
+curl -fsLS https://raw.githubusercontent.com/rafaelrinaldi/dotfiles/main/install.sh | bash
 ```
 
-This will prompt for:
+This will:
 
-- Machine profile (personal or work)
-- Bitwarden vault unlock (enter your master password)
-- SSH key passphrase (if applicable)
+1. Install Homebrew
+2. Install chezmoi
+3. Install asdf + Node.js
+4. Install Bitwarden CLI
+5. Prompt for Bitwarden login and vault unlock
+6. Prompt for machine profile (**personal** or **work**)
+7. Apply all dotfiles
 
-You can also set the profile via environment variable to skip the prompt:
+After completion, restart your terminal to switch to Fish shell.
+
+### Environment Variable (Optional)
+
+Skip the profile prompt by setting:
 
 ```bash
-export CHEZMOI_MACHINE_PROFILE=work
+export CHEZMOI_MACHINE_PROFILE=personal  # or "work"
 ```
 
 ## Syncing with Latest
 
+Pull the latest changes from the remote and apply them:
+
 ```bash
-# Unlock Bitwarden
+# Unlock Bitwarden (if session expired)
 export BW_SESSION=$(bw unlock --raw)
 
-# Update dotfiles
+# Pull and apply updates
 chezmoi update
 ```
 
-If you see a config file warning, run `chezmoi init` first.
-
-## Git/GitHub Authentication
-
-This setup automatically switches between work and personal GitHub accounts based on your working directory:
-
-- **`~/work/`** → Uses work email and GitHub user
-- **`~/dev/`** → Uses personal email and GitHub user
-
-### Multiple GitHub Accounts
-
-To authenticate multiple GitHub accounts with the `gh` CLI:
+Or just pull without applying:
 
 ```bash
-# Authenticate your accounts
-gh auth login --hostname github.com --git-protocol ssh --web
-
-# Switch between accounts when needed
-gh auth switch
+chezmoi git pull
+chezmoi diff  # Review changes
+chezmoi apply
 ```
 
-The directory-based Git config handles email and user switching automatically. The `gh` CLI can manage multiple authenticated accounts and switch between them as needed.
+## Git/GitHub Multi-Account Setup
+
+This setup **automatically** uses the correct GitHub account based on repo ownership:
+
+| Repo Owner | Account Used |
+|------------|--------------|
+| `rafaelrinaldi/*` | Personal |
+| Everything else | Work |
+
+No manual switching required. Push/pull just works.
+
+### How It Works
+
+A custom credential helper (`~/.config/git/git-credential-resolver`) inspects the repo URL and returns the appropriate token.
+
+Additionally, directory-based gitconfig sets the correct email:
+
+- **`~/work/`** → Work email
+- **`~/dev/`** → Personal email
+- **`~/.local/share/chezmoi/`** → Personal email
+
+## Secrets
+
+The setup expects a Bitwarden item named `chezmoi` with these custom fields:
+
+| Field | Description |
+|-------|-------------|
+| `email` | Personal email |
+| `github_token` | Personal GitHub PAT |
+| `github_user` | Personal GitHub username |
+| `npm_token` | Personal npm token |
+| `email_work` | Work email |
+| `github_token_work` | Work GitHub PAT |
+| `github_user_work` | Work GitHub username |
+| `npm_token_work` | Work npm token |
+| `match_password` | (Work only) Fastlane match password |
+| `segment_typewriter_token` | (Work only) Segment token |
+
+SSH keys are stored as attachments on the same item:
+- `ssh_cert` / `ssh_cert.pub` (personal)
+- `ssh_cert_work` / `ssh_cert_work.pub` (work)
 
 ## License
 
