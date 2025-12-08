@@ -11,7 +11,7 @@ Personal dotfiles managed with [chezmoi].
 ## Prerequisites
 
 - macOS
-- Bitwarden account with a `chezmoi` item containing secrets (see [Secrets](#secrets))
+- Bitwarden account with a `chezmoi` item containing secrets
 
 ## Fresh Installation
 
@@ -73,28 +73,6 @@ Additionally, directory-based gitconfig sets the correct email:
 - **`~/work/`** → Work email
 - **`~/dev/`** → Personal email
 - **`~/.local/share/chezmoi/`** → Personal email
-
-## Secrets
-
-The setup expects a Bitwarden item named `chezmoi` with these custom fields:
-
-| Field                      | Description                         |
-| -------------------------- | ----------------------------------- |
-| `email`                    | Personal email                      |
-| `github_token`             | Personal GitHub PAT                 |
-| `github_user`              | Personal GitHub username            |
-| `npm_token`                | Personal npm token                  |
-| `email_work`               | Work email                          |
-| `github_token_work`        | Work GitHub PAT                     |
-| `github_user_work`         | Work GitHub username                |
-| `npm_token_work`           | Work npm token                      |
-| `match_password`           | (Work only) Fastlane match password |
-| `segment_typewriter_token` | (Work only) Segment token           |
-
-SSH keys are stored as attachments on the same item:
-
-- `ssh_cert` / `ssh_cert.pub` (personal)
-- `ssh_cert_work` / `ssh_cert_work.pub` (work)
 
 ## License
 
