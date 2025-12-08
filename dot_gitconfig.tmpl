@@ -1,15 +1,10 @@
 # Default user configuration (fallback for directories outside ~/work/ and ~/dev/)
-{{- if not (hasKey . "email") }}
-{{- fail "Config not initialized. Please set CHEZMOI_MACHINE_PROFILE=work (or personal) and run 'chezmoi init' first" }}
-{{- end }}
 [user]
   name = Rafael Rinaldi
-  email = {{ .email }}
+  email = {{ if .isPersonal }}{{ .email_personal }}{{ else }}{{ .email_work }}{{ end }}
 
-{{- if (hasKey . "github_user") }}
 [github]
-  user = {{ .github_user }}
-{{- end }}
+  user = {{ if .isPersonal }}{{ .github_user_personal }}{{ else }}{{ .github_user_work }}{{ end }}
 
 # Directory-based config overrides
 [includeIf "gitdir:~/work/"]
@@ -100,9 +95,6 @@
 [gc]
   auto = 256
 
-{{- if not (hasKey . "isPersonal") }}
-{{- fail "Config not initialized. Please set CHEZMOI_MACHINE_PROFILE=work (or personal) and run 'chezmoi init' first" }}
-{{- end }}
 {{- if not .isPersonal }}
 [filter "lfs"]
   clean = git-lfs clean -- %f

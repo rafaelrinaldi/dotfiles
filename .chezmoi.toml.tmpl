@@ -23,16 +23,3 @@
   match_password = {{ $cm.match_password.value | quote }}
   segment_typewriter_token = {{ $cm.segment_typewriter_token.value | quote }}
 {{- end }}
-# Default values (based on machine profile)
-{{- if $isPersonal }}
-  email = {{ $cm.email.value | quote }}
-  github_token = {{ $cm.github_token.value | quote }}
-  github_user = {{ $cm.github_user.value | quote }}
-  npm_token = {{ $cm.npm_token.value | quote }}
-{{- else }}
-  email = {{ $cm.email_work.value | quote }}
-  github_token = {{ $cm.github_token_work.value | quote }}
-  github_user = {{ $cm.github_user_work.value | quote }}
-  npm_token = {{ $cm.npm_token_work.value | quote }}
-{{- end }}
-

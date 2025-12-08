@@ -3,9 +3,11 @@
 
 # Source asdf if available (needed for bw command)
 if [[ -f "$HOME/.asdf/asdf.sh" ]]; then
-  source "$HOME/.asdf/asdf.sh"
+  . "$HOME/.asdf/asdf.sh"
 elif [[ -f "/opt/homebrew/opt/asdf/libexec/asdf.sh" ]]; then
-  source "/opt/homebrew/opt/asdf/libexec/asdf.sh"
+  . "/opt/homebrew/opt/asdf/libexec/asdf.sh"
+elif command -v brew &>/dev/null && [[ -f "$(brew --prefix asdf)/libexec/asdf.sh" ]]; then
+  . "$(brew --prefix asdf)/libexec/asdf.sh"
 fi
 
 echo "Setting up SSH..."

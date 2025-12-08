@@ -29,9 +29,6 @@ cask "raycast"
 cask "tower"
 cask "xscope"
 
-{{- if not (hasKey . "isPersonal") }}
-{{- fail "Config not initialized. Please set CHEZMOI_MACHINE_PROFILE=work (or personal) and run 'chezmoi init' first" }}
-{{- end }}
 {{- if .isPersonal -}}
 cask "ente"
 {{- end -}}

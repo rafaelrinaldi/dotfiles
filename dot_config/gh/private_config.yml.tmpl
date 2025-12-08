@@ -7,4 +7,4 @@ aliases:
 http_unix_socket:
 browser:
 version: "1"
-user.email: "{{ .email }}"
+user.email: "{{ if .isPersonal }}{{ .email_personal }}{{ else }}{{ .email_work }}{{ end }}"

@@ -1,7 +1,4 @@
 # Work-specific Git config (applied when in ~/work/)
-{{- if not (hasKey . "email_work") }}
-{{- fail "Config not initialized. Please set CHEZMOI_MACHINE_PROFILE and run 'chezmoi init' first" }}
-{{- end }}
 [user]
   name = Rafael Rinaldi
   email = {{ .email_work }}
