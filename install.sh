@@ -150,6 +150,27 @@ if [[ -z "${BW_SESSION:-}" ]]; then
 fi
 
 # ------------------------------------------------------------------------------
+# Machine profile selection
+# ------------------------------------------------------------------------------
+echo ""
+echo "🖥️  Select machine profile:"
+echo "  1) personal"
+echo "  2) work"
+echo ""
+read -p "Enter choice [1-2]: " profile_choice
+
+case "$profile_choice" in
+  1) export CHEZMOI_MACHINE_PROFILE="personal" ;;
+  2) export CHEZMOI_MACHINE_PROFILE="work" ;;
+  *)
+    echo "Invalid choice. Defaulting to 'personal'."
+    export CHEZMOI_MACHINE_PROFILE="personal"
+    ;;
+esac
+
+echo "Using profile: $CHEZMOI_MACHINE_PROFILE"
+
+# ------------------------------------------------------------------------------
 # chezmoi init + apply
 # ------------------------------------------------------------------------------
 echo ""
