@@ -1,0 +1,7 @@
+# Avoca-specific Git config (applied when in ~/dev/avoca/)
+[user]
+  name = Rafael Rinaldi
+  email = rafael.rinaldi@avoca.ai
+
+[github]
+  user = rafa-avoca
