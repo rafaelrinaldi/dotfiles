@@ -77,25 +77,27 @@ if ! asdf plugin list 2>/dev/null | grep -q "nodejs"; then
   asdf plugin add nodejs
 fi
 
-if ! command -v node &>/dev/null; then
+if ! asdf list nodejs &>/dev/null; then
   echo "📦 Installing Node.js..."
   asdf install nodejs latest
-  asdf set nodejs latest --home
-  asdf reshim nodejs
 fi
 
-echo "✓ Node.js ready"
+# Set global Node.js version
+asdf global nodejs latest
+asdf reshim nodejs
+
+echo "✓ Node.js ready ($(node -v))"
 
 # ------------------------------------------------------------------------------
 # Bitwarden CLI (needed for chezmoi to fetch secrets)
 # ------------------------------------------------------------------------------
-if ! command -v bw &>/dev/null; then
+if ! npm list -g @bitwarden/cli &>/dev/null; then
   echo "📦 Installing Bitwarden CLI..."
   npm install -g @bitwarden/cli
   asdf reshim nodejs
 fi
 
-echo "✓ Bitwarden CLI ready"
+echo "✓ Bitwarden CLI ready ($(bw --version))"
 
 # ------------------------------------------------------------------------------
 # Bitwarden authentication
