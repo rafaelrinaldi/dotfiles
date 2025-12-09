@@ -77,7 +77,7 @@ echo "Font downloaded to: $TEMP_DIR/$FONT_FILENAME"
 echo "Unzipping '$TEMP_DIR/$FONT_FILENAME'..."
 
 pushd "$TEMP_DIR" >/dev/null
-unzip -o "$FONT_FILENAME" || true
+unzip -o "$FONT_FILENAME"
 
 if [ $? -ne 0 ]; then
   echo "ERROR: Failed to unzip '$FONT_FILENAME'. Cleaning up and exiting." >&2
@@ -86,15 +86,18 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo "File unzipped successfully in: $TEMP_DIR/${FONT_FILENAME_BASE}"
-
 popd >/dev/null
 
 echo "Installing fonts to $FONTS_DIR..."
 
 # Create the fonts directory if it doesn't exist
 mkdir -p "$FONTS_DIR"
-cp -r "$TEMP_DIR/$FONT_FILENAME_BASE"/*.otf $FONTS_DIR
+
+# Copy all OTF/TTF files (unzip extracts to current dir, not a subdirectory)
+find "$TEMP_DIR" -name "*.otf" -o -name "*.ttf" | while read -r font; do
+  cp "$font" "$FONTS_DIR/"
+  echo "Installed: $(basename "$font")"
+done
 
 echo "Clearing macOS font caches..."
 sudo atsutil databases -remove
