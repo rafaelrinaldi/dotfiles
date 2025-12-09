@@ -26,6 +26,8 @@ source_asdf() {
   elif [[ -f "$HOME/.asdf/asdf.sh" ]]; then
     . "$HOME/.asdf/asdf.sh"
   fi
+  # Ensure shims are in PATH
+  export PATH="$HOME/.asdf/shims:$PATH"
 }
 
 # ------------------------------------------------------------------------------
@@ -88,9 +90,14 @@ fi
 echo "nodejs $NODEJS_VERSION" > ~/.tool-versions
 asdf reshim nodejs
 
+# Re-source asdf to pick up new shims
+source_asdf
+
 # Verify node works
 if ! node -v &>/dev/null; then
   echo "❌ Node.js installation failed"
+  echo "DEBUG: PATH=$PATH"
+  echo "DEBUG: tool-versions=$(cat ~/.tool-versions)"
   exit 1
 fi
 
@@ -103,9 +110,14 @@ echo "📦 Installing Bitwarden CLI..."
 npm install -g @bitwarden/cli
 asdf reshim nodejs
 
+# Re-source asdf to pick up new shims
+source_asdf
+
 # Verify bw works
 if ! bw --version &>/dev/null; then
   echo "❌ Bitwarden CLI installation failed"
+  echo "DEBUG: PATH=$PATH"
+  echo "DEBUG: which bw=$(which bw 2>&1 || echo 'not found')"
   exit 1
 fi
 
