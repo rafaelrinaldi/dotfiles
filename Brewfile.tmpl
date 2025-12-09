@@ -28,10 +28,10 @@ cask "logi-options+"
 cask "raycast"
 cask "tower"
 cask "xscope"
-{{ if .isPersonal }}
+{{ if .isPersonal -}}
 cask "ente"
-{{ end }}
-{{- if not .isPersonal }}
+{{ end -}}
+{{ if not .isPersonal -}}
 # Hover
 brew "git-lfs"
 
