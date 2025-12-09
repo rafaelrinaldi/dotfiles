@@ -18,7 +18,7 @@ Personal dotfiles managed with [chezmoi].
 Run the bootstrap script on a fresh machine:
 
 ```bash
-curl -fsLS https://rinaldi.io/dotfiles | bash
+curl -fsLS https://rinaldi.io/dotfiles -o /tmp/install.sh && bash /tmp/install.sh
 ```
 
 This will:
