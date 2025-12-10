@@ -77,3 +77,4 @@ Additionally, directory-based gitconfig sets the correct email:
 ## License
 
 MIT © [Rafael Rinaldi][author]
+
