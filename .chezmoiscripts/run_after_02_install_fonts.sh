@@ -3,14 +3,24 @@
 
 set -euo pipefail
 
+FONT_FILENAME="TX-02-Variable.zip"
+FONT_FILENAME_BASE=$(basename "$FONT_FILENAME" .zip)
+FONTS_DIR="$HOME/Library/Fonts"
+
+# Check if fonts are already installed (early exit)
+if ls "${FONTS_DIR}/${FONT_FILENAME_BASE}"*.otf &>/dev/null; then
+  echo "Font '${FONT_FILENAME_BASE}' appears to be already installed. Skipping installation."
+  exit 0
+fi
+
+echo "Installing fonts..."
+
 # Source asdf if available (needed for bw command)
 if [[ -f "$HOME/.asdf/asdf.sh" ]]; then
   source "$HOME/.asdf/asdf.sh"
 elif [[ -f "/opt/homebrew/opt/asdf/libexec/asdf.sh" ]]; then
   source "/opt/homebrew/opt/asdf/libexec/asdf.sh"
 fi
-
-echo "Installing fonts..."
 
 # Check if bw is available
 if ! command -v bw &>/dev/null; then
@@ -19,9 +29,6 @@ if ! command -v bw &>/dev/null; then
   exit 0
 fi
 
-FONT_FILENAME="TX-02-Variable.zip"
-FONT_FILENAME_BASE=$(basename "$FONT_FILENAME" .zip) # Quote variables
-FONTS_DIR="$HOME/Library/Fonts"
 TEMP_DIR=$(mktemp -d)
 
 # Check if Bitwarden vault is unlocked and user is logged in
@@ -53,12 +60,6 @@ fi
 if [[ -z "$ITEM_ID" || "$ITEM_ID" == "null" ]]; then
   echo "Warning: Could not find Bitwarden item 'chezmoi'. Skipping font installation."
   echo "Make sure the item exists and you have access to it."
-  rm -rf "$TEMP_DIR"
-  exit 0
-fi
-
-if ls "${FONTS_DIR}/${FONT_FILENAME_BASE}"*.otf &>/dev/null; then
-  echo "Font '${FONT_FILENAME_BASE}' appears to be already installed. Skipping installation."
   rm -rf "$TEMP_DIR"
   exit 0
 fi
