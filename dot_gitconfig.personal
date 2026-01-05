@@ -1,8 +1,8 @@
 # Personal-specific Git config (applied when in ~/dev/)
 [user]
   name = Rafael Rinaldi
-  email = {{ .email_personal }}
+  email = rafael@rinaldi.io
 
 [github]
-  user = {{ .github_user_personal }}
+  user = rafaelrinaldi
 

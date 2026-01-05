@@ -1,8 +1,8 @@
 # Work-specific Git config (applied when in ~/work/)
 [user]
   name = Rafael Rinaldi
-  email = {{ .email_work }}
+  email = rafael.rinaldi@hover.to
 
 [github]
-  user = {{ .github_user_work }}
+  user = rafa-hover
 

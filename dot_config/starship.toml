@@ -1,4 +1,4 @@
-command_timeout = 2000
+"$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
 $username\
@@ -7,54 +7,43 @@ $directory\
 $git_branch\
 $git_state\
 $git_status\
-$fill\
-$nodejs\
-$ruby\
-$cmd_duration $time\
+$cmd_duration\
 $line_break\
+$python\
 $character"""
 
-[custom.gh_user]
-when = true
-command = "echo $(_gh_user)"
-symbol = ""
-format = "[$symbol $output]($style) "
-require_repo = true
-
-[nodejs]
-style = "green"
-format = "[$symbol($version)]($style) "
-
-[ruby]
-symbol = ""
-format = "[$symbol ($version)]($style) "
-
-[fill]
-symbol = " "
-
 [directory]
-style = "yellow"
-truncation_length = 3
-truncate_to_repo = false
+style = "blue"
 
 [character]
 success_symbol = '[\$](purple)'
 error_symbol = '[\$](bold red)'
 
 [git_branch]
-symbol = " "
-format = "[$symbol$branch]($style) "
+format = "[$branch]($style)"
+style = "bright-black"
 
 [git_status]
-format = "[[$conflicted$untracked$modified$renamed$staged$deleted$stashed$ahead_behind](orange)]($style)"
-conflicted = " $count "
-untracked = " $count "
-modified = " $count "
-deleted = " $count "
-staged = " $count "
-renamed = " $count "
-stashed = " $count "
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
+style = "cyan"
+conflicted = "​"
+untracked = "​"
+modified = "​"
+staged = "​"
+renamed = "​"
+deleted = "​"
+stashed = "≡"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
 
 [cmd_duration]
-format = "[$duration]($style)"
+format = "[$duration]($style) "
 style = "yellow"
+
+[python]
+format = "[$virtualenv]($style) "
+style = "bright-black"
+detect_extensions = []
+detect_files = []

@@ -1,10 +1,10 @@
 # Default user configuration (fallback for directories outside ~/work/ and ~/dev/)
 [user]
   name = Rafael Rinaldi
-  email = {{ if .isPersonal }}{{ .email_personal }}{{ else }}{{ .email_work }}{{ end }}
+  email = rafael@rinaldi.io
 
 [github]
-  user = {{ if .isPersonal }}{{ .github_user_personal }}{{ else }}{{ .github_user_work }}{{ end }}
+  user = rafaelrinaldi
 
 # Directory-based config overrides
 [includeIf "gitdir:~/work/"]
@@ -20,8 +20,8 @@
   path = ~/.gitconfig.personal
 
 [credential "https://github.com"]
-  helper = !~/.config/git/git-credential-resolver
-  useHttpPath = true
+     useHttpPath = true
+     helper = !/opt/homebrew/bin/gh auth git-credential
 
 [url "https://github.com/"]
   insteadOf = ssh://git@github.com/
@@ -98,11 +98,3 @@
 
 [gc]
   auto = 256
-
-{{- if not .isPersonal }}
-[filter "lfs"]
-  clean = git-lfs clean -- %f
-  smudge = git-lfs smudge -- %f
-  process = git-lfs filter-process
-  required = true
-{{- end -}}
