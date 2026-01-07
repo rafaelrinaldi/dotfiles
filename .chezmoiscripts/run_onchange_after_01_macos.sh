@@ -128,6 +128,25 @@ defaults write NSGlobalDomain NSDisableAutomaticTermination -bool true
 defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
 
 ###############################################################################
+# Wallpaper Settings
+###############################################################################
+
+echo "Setting wallpaper..."
+
+# Set wallpaper to grid.heic
+if [ -f "$HOME/Pictures/grid.heic" ]; then
+    WALLPAPER_ABS="$(cd "$HOME/Pictures" && pwd)/grid.heic"
+    osascript <<EOF
+tell application "System Events"
+    tell every desktop
+        set picture to "$WALLPAPER_ABS"
+    end tell
+end tell
+EOF
+    echo "✓ Wallpaper set to grid.heic"
+fi
+
+###############################################################################
 # Apply Changes
 ###############################################################################
 
