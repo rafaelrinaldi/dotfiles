@@ -2,7 +2,11 @@ start-at-login = true
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
-after-startup-command = ['layout tiles']                               # Default to tiles layout on startup
+after-startup-command = [
+  'layout tiles',
+  'exec-and-forget borders'
+]
+
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
 
@@ -17,12 +21,12 @@ exec-on-workspace-change = [
 ]
 
 [gaps]
-inner.horizontal = 10
-inner.vertical = 10
-outer.left = 10
-outer.bottom = 10
-outer.top = 10
-outer.right = 10
+inner.horizontal = 14
+inner.vertical = 14
+outer.left = 14
+outer.bottom = 14
+outer.top = 14
+outer.right = 14
 
 [key-mapping]
 preset = 'qwerty'
