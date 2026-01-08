@@ -55,24 +55,13 @@ chezmoi apply
 
 ## Git/GitHub Multi-Account Setup
 
-This setup **automatically** uses the correct GitHub account based on repo ownership:
-
-| Repo Owner        | Account Used |
-| ----------------- | ------------ |
-| `rafaelrinaldi/*` | Personal     |
-| Everything else   | Work         |
-
-No manual switching required. Push/pull just works.
-
-### How It Works
-
-A custom credential helper (`~/.config/git/git-credential-resolver`) inspects the repo URL and returns the appropriate token.
-
-Additionally, directory-based gitconfig sets the correct email:
+This setup uses `gh auth git-credential` for GitHub authentication with directory-based gitconfig for the correct email:
 
 - **`~/work/`** → Work email
 - **`~/dev/`** → Personal email
 - **`~/.local/share/chezmoi/`** → Personal email
+
+Use `gh auth switch --user <username>` to switch between GitHub accounts.
 
 ## License
 
