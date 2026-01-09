@@ -25,13 +25,13 @@
                         ]
                     },
                     {
-                        "description": "Option+Escape to Tilde, Option+Q to Backtick",
+                        "description": "Shift+Escape to Tilde, Option+Q to Backtick",
                         "manipulators": [
                             {
                                 "from": {
                                     "key_code": "escape",
                                     "modifiers": {
-                                        "mandatory": ["option"],
+                                        "mandatory": ["shift"],
                                         "optional": ["caps_lock"]
                                     }
                                 },
