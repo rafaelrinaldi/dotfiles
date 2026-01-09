@@ -1,3 +1,5 @@
 github.com:
-  git_protocol: https
-  user: {{ if .isPersonal }}{{ .github_user_personal }}{{ else }}{{ .github_user_work }}{{ end }}
+    git_protocol: https
+    user: {{ if .isPersonal }}{{ .github_user_personal }}{{ else }}{{ .github_user_work }}{{ end }}
+    users:
+        {{ if .isPersonal }}{{ .github_user_personal }}{{ else }}{{ .github_user_work }}{{ end }}:
