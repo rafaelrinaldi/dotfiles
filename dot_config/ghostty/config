@@ -59,6 +59,6 @@ macos-icon-screen-color = #000000
 quick-terminal-size = 45%
 
 # Acento ortográfico
-# macos-option-as-alt = false
+macos-option-as-alt = false
 
 keybind = global:cmd+delete=toggle_quick_terminal
