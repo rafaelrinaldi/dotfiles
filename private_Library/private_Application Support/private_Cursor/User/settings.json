@@ -18,6 +18,10 @@
   "workbench.tree.renderIndentGuides": "none",
   "workbench.layoutControl.enabled": false,
   "workbench.iconTheme": "vs-minimal",
+  "workbench.colorCustomizations": {
+    "editorIndentGuide.background1": "#00000001",
+    "editorIndentGuide.activeBackground1": "#80808050"
+  },
 
   // Editor
   "editor.fontSize": 15,
